@@ -11,6 +11,8 @@ const Home = () => {
   const [locationName, setLocationName] = useState('');
   const [temperature, setTemperature] = useState<number | null>(null);
   const [weatherDescription, setWeatherDescription] = useState('');
+  const [shortNote, setShortNote] = useState('');
+  const [weatherTimes, setWeatherTimes] = useState([]);
 
   const url = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY}&q=${location}&days=7&aqi=yes&alerts=yes`;
 
@@ -27,6 +29,15 @@ const Home = () => {
         setLocationName(data.location.name);
         setTemperature(data.current.temp_c);
         setWeatherDescription(data.current.condition.text);
+        setShortNote(data.forecast.forecastday[0].day.condition.text);
+        setWeatherTimes(data.forecast.forecastday[0].hour
+          .filter((hour: { time: string }) => new Date(hour.time).getHours() >= new Date().getHours())
+          .slice(0, 10)
+          .map((hour: { time: string; temp_c: number; condition: { text: string } }) => ({
+            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            temperature: hour.temp_c,
+            weatherCondition: hour.condition.text,
+          })));
         setLocation('');
         setError('');
       } catch (error) {
@@ -48,19 +59,25 @@ const Home = () => {
             searchQuery={location}
           />
         </div>
-        
-        {/* MainBento */}
+           {/* MainBento */}
         <div className="flex justify-center mt-6">
           <MainBento 
             locationName={locationName}
             temperature={temperature}
             weatherDescription={weatherDescription}
+            shortNote={shortNote}
           />
         </div>
 
         {/* BentoGrids */}
         <div className="flex justify-center mt-6">
-          <BentoGrids />
+          <BentoGrids 
+            locationName={locationName}
+            temperature={temperature}
+            weatherDescription={weatherDescription}
+            shortNote={shortNote}
+            weatherTimes={weatherTimes}
+          />
         </div>
       </div>
     </div>

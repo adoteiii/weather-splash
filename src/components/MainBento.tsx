@@ -2,7 +2,7 @@ import React from 'react';
 
 interface MainBentoProps {
   locationName: string;
-  temperature: number | null;
+  temperature: number;
   weatherDescription: string;
 }
 
