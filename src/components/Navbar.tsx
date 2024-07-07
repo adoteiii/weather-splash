@@ -1,22 +1,17 @@
-import { useState, ChangeEvent } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LightDarkMode from './LightDarkMode';
+import Input from './Input';
 
-const Navbar:React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [locationName, setLocationName] = useState('');
+interface NavbarProps {
+  handleSearch: (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>) => Promise<void>;
+  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  locationName: string;
+  searchQuery: string;
+}
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
-  const handleSearch = () => {
-    // Assuming this function gets called when the search is confirmed
-    setLocationName(searchQuery);
-    setSearchQuery('');
-  };
-
+const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName, searchQuery }) => {
   return (
     <nav className="top-0 py-3 z-[1000] bg-black w-full">
       <div className="container px-4 mx-auto relative text-sm">
@@ -33,26 +28,12 @@ const Navbar:React.FC = () => {
           </Link>
 
           <div className="flex justify-around items-center w-full sm:w-auto mt-4 sm:mt-0 flex-wrap sm:flex-nowrap">
-            <div className="flex justify-center w-full sm:w-[280px] bg-[#2e2e2e] rounded-3xl h-8 items-center px-2">
-              <img className="w-4 h-4" alt="Magnifyingglass" src="/assets/magnifyingglass-1.svg" />
-              <input
-                type="text"
-                placeholder="Search City..."
-                value={searchQuery}
-                onChange={handleInputChange}
-                className="ml-2 bg-transparent border-none text-white text-xs focus:outline-none w-full"
-              />
-              <button onClick={handleSearch} className="ml-2 text-xs text-white">
-                Search
-              </button>
-            </div>
-
-            <div className="flex justify-center w-full sm:w-[280px] mt-4 sm:mt-0 h-8 items-center px-2 text-white">
-              <img className="w-4 h-4" alt="location" src="/assets/layer-1.svg" />
-              {locationName && (
-                <span className="ml-2 text-xs">{locationName}</span>
-              )}
-            </div>
+            <Input 
+              handleSearch={handleSearch} 
+              setLocation={setLocation} 
+              locationName={locationName}
+              searchQuery={searchQuery}
+            />
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-8 text-white">
               <LightDarkMode />
