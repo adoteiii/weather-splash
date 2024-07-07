@@ -4,9 +4,10 @@ interface MainBentoProps {
   locationName: string;
   temperature: number;
   weatherDescription: string;
+  shortNote: string;
 }
 
-const MainBento: React.FC<MainBentoProps> = ({ locationName, temperature, weatherDescription }) => {
+const MainBento: React.FC<MainBentoProps> = ({ locationName, temperature, shortNote }) => {
   return (
     <div className="flex justify-center items-center h-[184px]">
       <div className="w-64 h-full rounded-3xl bg-gradient-to-b from-yellow-400 to-orange-500 flex flex-col justify-between p-4">
@@ -18,7 +19,7 @@ const MainBento: React.FC<MainBentoProps> = ({ locationName, temperature, weathe
           <span>{temperature}°</span>
         </div>
         <div className="text-white text-base font-normal text-center">
-          {weatherDescription}
+          {shortNote}
         </div>
       </div>
     </div>

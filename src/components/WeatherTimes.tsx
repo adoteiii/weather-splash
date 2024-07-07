@@ -1,53 +1,58 @@
 import React from 'react';
+import { WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiFog, WiRainMix, WiRain, WiShowers, WiSnow, WiSnowflakeCold, WiDayRainMix, WiDaySnow } from 'weather-icons-react';
 
 interface WeatherTimesProps {
   times: { time: string; temperature: number; weatherCondition: string }[];
 }
 
 const WeatherTimes: React.FC<WeatherTimesProps> = ({ times }) => {
-
-
   const getWeatherIcon = (condition: string) => {
+    console.log("Weather condition:", condition);  
     switch (condition) {
       case 'Sunny':
       case 'Clear':
-        return '/assets/sunny.svg'; 
+        return <WiDaySunny size={24} color="#fff" />;
       case 'Partly cloudy':
-        return '/assets/partly_cloudy.svg'; 
+        return <WiDayCloudy size={24} color="#fff" />;
       case 'Cloudy':
-        return '/assets/cloudy.svg'; 
+        return <WiCloud size={24} color="#fff" />;
       case 'Overcast':
-        return '/assets/overcast.svg'; 
+        return <WiCloudy size={24} color="#fff" />;
       case 'Mist':
-        return '/assets/mist.svg'; 
+      case 'Fog':
+        return <WiFog size={24} color="#fff" />;
       case 'Patchy rain possible':
-        return '/assets/patchy_rain.svg'; 
+      case 'Patchy rain nearby':
+        return <WiDayRainMix size={24} color="#fff" />;
       case 'Light rain':
-        return '/assets/light_rain.svg'; 
+      case 'Patchy light rain':
+        return <WiRain size={24} color="#fff" />;
       case 'Moderate rain':
-        return '/assets/moderate_rain.svg'; 
+      case 'Moderate rain at times':
+        return <WiShowers size={24} color="#fff" />;
       case 'Heavy rain':
-        return '/assets/heavy_rain.svg'; 
+      case 'Heavy rain at times':
+        return <WiRainMix size={24} color="#fff" />;
       case 'Patchy snow possible':
-        return '/assets/patchy_snow.svg'; 
+      case 'Patchy light snow':
+        return <WiDaySnow size={24} color="#fff" />;
       case 'Light snow':
-        return '/assets/light_snow.svg'; 
+        return <WiSnow size={24} color="#fff" />;
       case 'Moderate snow':
-        return '/assets/moderate_snow.svg'; 
+        return <WiSnowflakeCold size={24} color="#fff" />;
       case 'Heavy snow':
-        return '/assets/heavy_snow.svg'; 
+        return <WiSnow size={24} color="#fff" />;
       default:
-        return '/assets/sun.svg'; 
+        return <WiDaySunny size={24} color="#fff" />;
     }
   };
 
   return (
     <div className="w-full flex justify-between">
-        
       {times.map((weather, index) => (
         <div key={index} className="text-white text-center">
           <div className="text-xs font-bold mt-4">{weather.time}</div>
-          <img src={getWeatherIcon(weather.weatherCondition)} alt={weather.weatherCondition} className="h-8 w-8 mx-auto mt-4" />
+          <div className="h-8 w-8 mx-auto mt-4">{getWeatherIcon(weather.weatherCondition)}</div>
           <div className="text-lg my-4">{weather.temperature}°</div>
         </div>
       ))}
