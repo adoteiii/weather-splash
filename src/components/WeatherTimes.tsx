@@ -13,6 +13,7 @@ const WeatherTimes: React.FC<WeatherTimesProps> = ({ times }) => {
       case 'Clear':
         return <WiDaySunny size={24} color="#fff" />;
       case 'Partly cloudy':
+      case 'Partly Cloudy':
         return <WiDayCloudy size={24} color="#fff" />;
       case 'Cloudy':
         return <WiCloud size={24} color="#fff" />;
@@ -26,6 +27,8 @@ const WeatherTimes: React.FC<WeatherTimesProps> = ({ times }) => {
         return <WiDayRainMix size={24} color="#fff" />;
       case 'Light rain':
       case 'Patchy light rain':
+      case 'Light rain shower':
+        
         return <WiRain size={24} color="#fff" />;
       case 'Moderate rain':
       case 'Moderate rain at times':

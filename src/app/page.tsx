@@ -1,18 +1,21 @@
-"use client";
+"use client"
+
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import MainBento from "@/components/MainBento";
 import BentoGrids from "@/components/BentoGrids";
 
-const Home = () => {
+const Home: React.FC = () => {
   const [data, setData] = useState<any>({});
   const [location, setLocation] = useState('');
   const [error, setError] = useState('');
   const [locationName, setLocationName] = useState('');
-  const [temperature, setTemperature] = useState<number | null>(null);
+  const [temperature, setTemperature] = useState<number>(0);
   const [weatherDescription, setWeatherDescription] = useState('');
   const [shortNote, setShortNote] = useState('');
   const [weatherTimes, setWeatherTimes] = useState([]);
+  const [lat, setLat] = useState<number>(0);
+  const [lon, setLon] = useState<number>(0);
 
   const url = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY}&q=${location}&days=7&aqi=yes&alerts=yes`;
 
@@ -27,17 +30,19 @@ const Home = () => {
         const data = await response.json();
         setData(data);
         setLocationName(data.location.name);
-        setTemperature(data.current.temp_c);
+        setTemperature(Math.round(data.current.temp_c));
         setWeatherDescription(data.current.condition.text);
         setShortNote(data.forecast.forecastday[0].day.condition.text);
         setWeatherTimes(data.forecast.forecastday[0].hour
           .filter((hour: { time: string }) => new Date(hour.time).getHours() >= new Date().getHours())
           .slice(0, 10)
           .map((hour: { time: string; temp_c: number; condition: { text: string } }) => ({
-            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            temperature: hour.temp_c,
+            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit'}),
+            temperature: Math.round(hour.temp_c),
             weatherCondition: hour.condition.text,
           })));
+        setLat(data.location.lat);
+        setLon(data.location.lon);
         setLocation('');
         setError('');
       } catch (error) {
@@ -59,7 +64,7 @@ const Home = () => {
             searchQuery={location}
           />
         </div>
-           {/* MainBento */}
+        {/* MainBento */}
         <div className="flex justify-center mt-6">
           <MainBento 
             locationName={locationName}
@@ -77,6 +82,8 @@ const Home = () => {
             weatherDescription={weatherDescription}
             shortNote={shortNote}
             weatherTimes={weatherTimes}
+            lat={lat}
+            lon={lon}
           />
         </div>
       </div>
