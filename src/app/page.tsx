@@ -1,9 +1,10 @@
-"use client"
+'use client'
 
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import MainBento from "@/components/MainBento";
 import BentoGrids from "@/components/BentoGrids";
+import AlertsModal from "@/components/AlertsModal";
 
 const Home: React.FC = () => {
   const [data, setData] = useState<any>({});
@@ -16,6 +17,8 @@ const Home: React.FC = () => {
   const [weatherTimes, setWeatherTimes] = useState([]);
   const [lat, setLat] = useState<number>(0);
   const [lon, setLon] = useState<number>(0);
+  const [alerts, setAlerts] = useState<any[]>([]); // State to store alerts
+  const [showAlertsModal, setShowAlertsModal] = useState(false); // State to control modal visibility
 
   const url = `http://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY}&q=${location}&days=7&aqi=yes&alerts=yes`;
 
@@ -37,12 +40,13 @@ const Home: React.FC = () => {
           .filter((hour: { time: string }) => new Date(hour.time).getHours() >= new Date().getHours())
           .slice(0, 10)
           .map((hour: { time: string; temp_c: number; condition: { text: string } }) => ({
-            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit'}),
+            time: new Date(hour.time).toLocaleTimeString([], { hour: '2-digit' }),
             temperature: Math.round(hour.temp_c),
             weatherCondition: hour.condition.text,
           })));
         setLat(data.location.lat);
         setLon(data.location.lon);
+        setAlerts(data.alerts?.alert || []); // Set alerts state
         setLocation('');
         setError('');
       } catch (error) {
@@ -62,6 +66,8 @@ const Home: React.FC = () => {
             setLocation={setLocation}
             locationName={locationName}
             searchQuery={location}
+            alerts={alerts} // Pass alerts to Navbar
+            onAlertIconClick={() => setShowAlertsModal(true)} // Show modal on alert icon click
           />
         </div>
         {/* MainBento */}
@@ -86,6 +92,14 @@ const Home: React.FC = () => {
             lon={lon}
           />
         </div>
+
+        {/* Alerts Modal */}
+        {showAlertsModal && (
+          <AlertsModal 
+            alerts={alerts} 
+            onClose={() => setShowAlertsModal(false)} 
+          />
+        )}
       </div>
     </div>
   );

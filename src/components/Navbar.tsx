@@ -9,9 +9,11 @@ interface NavbarProps {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   locationName: string;
   searchQuery: string;
+  alerts: any[]; // Add alerts prop
+  onAlertIconClick: () => void; // Add onAlertIconClick prop
 }
 
-const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName, searchQuery }) => {
+const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName, searchQuery, alerts, onAlertIconClick }) => {
   return (
     <nav className="top-0 py-3 z-[1000] bg-black w-full">
       <div className="container px-4 mx-auto relative text-sm">
@@ -37,6 +39,15 @@ const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-8 text-white">
               <LightDarkMode />
+            </div>
+
+            <div className="relative flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
+              <img className="w-4 h-4" alt="notifications" src="assets/notification-bell.png" onClick={onAlertIconClick} />
+              {alerts.length > 0 && (
+                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                  {alerts.length}
+                </span>
+              )}
             </div>
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
