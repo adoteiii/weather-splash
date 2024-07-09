@@ -9,8 +9,8 @@ interface NavbarProps {
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   locationName: string;
   searchQuery: string;
-  alerts: any[]; // Add alerts prop
-  onAlertIconClick: () => void; // Add onAlertIconClick prop
+  alerts: any[]; 
+  onAlertIconClick: () => void; // 
 }
 
 const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName, searchQuery, alerts, onAlertIconClick }) => {
