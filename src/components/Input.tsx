@@ -1,13 +1,11 @@
 "use client";
-import {FiMapPin} from 'react-icons/fi'
+import { FiMapPin } from 'react-icons/fi';
 import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
-interface InputProps {
-
-}
+interface InputProps {}
 
 type SearchResult = {
   country: string;
@@ -24,14 +22,14 @@ const Input: React.FC<InputProps> = () => {
   const data = useAppSelector((state) => state.DataReducer.value);
   const location = useAppSelector((state) => state.LocationReducer.value);
   const [search, setSearch] = useState(location);
-  const [searchResults, setSearchResults] = useState<SearchResult|null|undefined>();
-  
+  const [searchResults, setSearchResults] = useState<SearchResult | null | undefined>();
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
   const selectItem = (item: string) => {
-    console.log('item setting', item)
-    setSearchResults(null)
+    setSearchResults(null);
     dispatch(setLocation(item));
-    // 
-    setSearch(item)
+    setSearch(item);
+    setShowSuggestions(false); // Hide suggestions on selection
   };
 
   const querySearch = () => {
@@ -40,7 +38,6 @@ const Input: React.FC<InputProps> = () => {
     )
       .then(async (data) => {
         let res = await data.json();
-        console.log(res);
         setSearchResults(res);
       })
       .catch((err) => {
@@ -52,17 +49,17 @@ const Input: React.FC<InputProps> = () => {
     if (!search || search.length < 3) {
       return;
     }
-    if (searchResults===null){
-      setSearchResults(undefined)
-      return
+    if (searchResults === null) {
+      setSearchResults(undefined);
+      return;
     }
-    
 
-    const timeoutId = setTimeout(querySearch, 1200)
-    return ()=>{
-      clearTimeout(timeoutId)
-    }
+    const timeoutId = setTimeout(querySearch, 1200);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [search]);
+
   return (
     <div className="flex w-full justify-between items-center flex-1 sm:w-auto gap-4 sm:mt-0 flex-wrap sm:flex-nowrap">
       <div className="flex flex-col">
@@ -75,28 +72,30 @@ const Input: React.FC<InputProps> = () => {
           <input
             type="text"
             placeholder="Search City..."
-            onKeyDown={()=>{
-
-            }}
+            onFocus={() => setShowSuggestions(true)} // Show suggestions on focus
+            onBlur={() => setShowSuggestions(false)} // Hide suggestions on blur
             value={search}
             onChange={(e) => setSearch(e.currentTarget.value)}
             className="ml-2 bg-transparent border-none text-white text-xs focus:outline-none flex-1"
           />
-          
         </div>
-        {searchResults && (
-          <div  className="absolute z-50 min-h-[150px] max-h-[200px] overflow-scroll  mt-10 w-full bg-black/90 border-b-2 px-2 py-2 border-gray-800">
+        {showSuggestions && searchResults && (
+          <div className="absolute z-50 min-h-[150px] max-h-[200px] overflow-hidden mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
             {searchResults.map((res) => (
-              <div onClick={(e)=>{
-                e.preventDefault()
-                selectItem(res.name)
-              }} className="px-3 gap-2 flex flex-col border-b-[0.1px] border-b-white/10 border-t-[0.1px] border-t-white/10 py-2 hover:bg-white/10 hover:cursor-pointer" key={res.id}>
+              <div
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  selectItem(res.name);
+                }}
+                className="px-3 gap-2 flex flex-col border-b-[0.1px] border-b-white/10 border-t-[0.1px] border-t-white/10 py-2 hover:bg-white/10 hover:cursor-pointer"
+                key={res.id}
+              >
                 <h1>{res.name}</h1>
                 <div className="flex gap-2 items-center">
-                  <FiMapPin></FiMapPin>
+                  <FiMapPin />
                   <p>{res.region}, {res.country}</p>
                 </div>
-                </div>
+              </div>
             ))}
           </div>
         )}

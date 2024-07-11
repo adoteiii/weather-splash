@@ -25,3 +25,17 @@ body{
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.suggestion-box {
+  overflow-y: auto;
+}
+
+.suggestion-box::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.suggestion-box {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+

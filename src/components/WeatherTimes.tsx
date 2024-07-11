@@ -52,7 +52,7 @@ const WeatherTimes: React.FC<WeatherTimesProps> = ({ times }) => {
   };
 
   return (
-    <div className="w-full flex gap-6 overflow-scroll">
+    <div className="w-full flex gap-6 overflow-hidden suggestion-box">
       {times.map((weather, index) => (
         <div key={index} className="text-white text-center">
           <div className="text-xs font-bold mt-4">{weather.time}</div>
