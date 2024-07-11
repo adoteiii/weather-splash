@@ -54,8 +54,8 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
               )}
             </div>
 
-            <div className="flex justify-center w-full sm:w-auto sm:mt-0 h-8 items-center px-2 text-white">
-              <Link href="/login" className="w-4 h-4">
+            <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
+            <Link href="/login" className="w-4 h-4">
                 <img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" />
               </Link>
             </div>
