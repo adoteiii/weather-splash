@@ -53,9 +53,11 @@ const Input: React.FC<InputProps> = () => {
       return;
     }
     if (searchResults===null){
+      setSearchResults(undefined)
       return
     }
-    setSearchResults(undefined)
+    
+
     const timeoutId = setTimeout(querySearch, 1200)
     return ()=>{
       clearTimeout(timeoutId)
