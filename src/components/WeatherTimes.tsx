@@ -1,4 +1,5 @@
 import React from 'react';
+//@ts-ignore
 import { WiDaySunny, WiDayCloudy, WiCloud, WiCloudy, WiFog, WiRainMix, WiRain, WiShowers, WiSnow, WiSnowflakeCold, WiDayRainMix, WiDaySnow } from 'weather-icons-react';
 
 interface WeatherTimesProps {
@@ -51,7 +52,7 @@ const WeatherTimes: React.FC<WeatherTimesProps> = ({ times }) => {
   };
 
   return (
-    <div className="w-full flex justify-between">
+    <div className="w-full flex gap-6 overflow-scroll">
       {times.map((weather, index) => (
         <div key={index} className="text-white text-center">
           <div className="text-xs font-bold mt-4">{weather.time}</div>

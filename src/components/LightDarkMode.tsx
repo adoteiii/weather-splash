@@ -15,7 +15,7 @@ const LightDarkMode: React.FC = () => {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="flex items-center justify-center p-2 bg-gray-200 dark:bg-gray-800 rounded-full"
+      className=" flex items-center justify-center p-2 bg-gray-200 dark:bg-gray-800 rounded-full"
     >
       <div className="mr-2">
         <Image
@@ -23,6 +23,7 @@ const LightDarkMode: React.FC = () => {
           alt="Sun Icon"
           width={24}
           height={24}
+          className='w-6 h-6'
         />
       </div>
       <div>
@@ -31,6 +32,7 @@ const LightDarkMode: React.FC = () => {
           alt="Moon Icon"
           width={24}
           height={24}
+          className='w-6 h-6'
         />
       </div>
     </button>

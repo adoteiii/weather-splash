@@ -1,13 +1,15 @@
+import { useAppSelector } from '@/redux/store';
 import React from 'react';
 
-interface MainBentoProps {
-  locationName: string;
-  temperature: number;
-  weatherDescription: string;
-  shortNote: string;
-}
+// interface MainBentoProps {
+//   locationName: string;
+//   temperature: number;
+//   weatherDescription: string;
+//   shortNote: string;
+// }
 
-const MainBento: React.FC<MainBentoProps> = ({ locationName, temperature, weatherDescription, shortNote }) => {
+const MainBento: React.FC = () => {
+  const data = useAppSelector(state=>state.DataReducer.value)
   const getGradientColor = (description: string) => {
     switch (description) {
       case 'Sunny':
@@ -37,20 +39,20 @@ const MainBento: React.FC<MainBentoProps> = ({ locationName, temperature, weathe
   };
 
   return (
-    <div className="flex justify-center items-center h-[184px]">
-      <div className={`w-64 h-full rounded-3xl bg-gradient-to-b ${getGradientColor(weatherDescription)} flex flex-col justify-between p-4`}>
+    data?<div className="flex justify-center items-center h-[184px]">
+      <div className={`w-64 h-full rounded-3xl bg-gradient-to-b ${getGradientColor(data?.current?.condition?.text)} flex flex-col justify-between p-4`}>
         <div className="text-white text-2xl font-medium text-center">
           My Location
         </div>
         <div className="text-white text-5xl font-normal flex flex-col items-center">
-          <span className="text-xs font-bold">{locationName.toUpperCase()}</span>
-          <span>{temperature}°</span>
+          <span className="text-xs font-bold">{data?.location?.name?.toUpperCase()}</span>
+          <span>{data?.current?.temp_c}°</span>
         </div>
         <div className="text-white text-base font-normal text-center">
-          {shortNote}
+          {data?.forecast?.forecastday?.[0].day?.condition?.text}
         </div>
       </div>
-    </div>
+    </div>:<div></div>
   );
 };
 

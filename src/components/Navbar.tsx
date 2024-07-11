@@ -1,21 +1,27 @@
-import React from 'react';
+import React, { KeyboardEvent, MouseEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LightDarkMode from './LightDarkMode';
 import Input from './Input';
+import { useAppSelector } from '@/redux/store';
+import Loader from './Loader';
+
 
 interface NavbarProps {
-  handleSearch: (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>) => Promise<void>;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
-  locationName: string;
-  searchQuery: string;
+  
   alerts: any[]; 
   onAlertIconClick: () => void; // 
 }
 
-const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName, searchQuery, alerts, onAlertIconClick }) => {
+const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
+  const data = useAppSelector(state=>state.DataReducer.value)
+
+  const handleSearch = ()=>{
+    console.log('event')
+  }
+
   return (
-    <nav className="top-0 py-3 z-[1000] bg-black w-full">
+    data!==undefined?<nav className="top-0 py-3 z-[1000] bg-black w-full">
       <div className="container px-4 mx-auto relative text-sm">
         <div className="flex justify-between items-center flex-wrap">
           <Link href="/" className="hover:cursor-pointer">
@@ -31,10 +37,8 @@ const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName
 
           <div className="flex justify-around items-center w-full sm:w-auto mt-4 sm:mt-0 flex-wrap sm:flex-nowrap">
             <Input 
-              handleSearch={handleSearch} 
-              setLocation={setLocation} 
-              locationName={locationName}
-              searchQuery={searchQuery}
+              handleSearch={(e)=>handleSearch()} 
+            
             />
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-8 text-white">
@@ -56,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ handleSearch, setLocation, locationName
           </div>
         </div>
       </div>
-    </nav>
+    </nav>:<div></div>
   );
 };
 
