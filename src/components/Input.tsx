@@ -1,5 +1,5 @@
 "use client";
-
+import {FiMapPin} from 'react-icons/fi'
 import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect, useState } from "react";
@@ -87,10 +87,16 @@ const Input: React.FC<InputProps> = () => {
         {searchResults && (
           <div  className="absolute z-50 min-h-[150px] max-h-[200px] overflow-scroll  mt-10 w-full bg-black/90 border-b-2 px-2 py-2 border-gray-800">
             {searchResults.map((res) => (
-              <p onClick={(e)=>{
+              <div onClick={(e)=>{
                 e.preventDefault()
                 selectItem(res.name)
-              }} className="px-3 border-b-[0.1px] border-b-white/10 py-2 hover:bg-white/10 hover:cursor-pointer" key={res.id}>{res.name}</p>
+              }} className="px-3 gap-2 flex flex-col border-b-[0.1px] border-b-white/10 border-t-[0.1px] border-t-white/10 py-2 hover:bg-white/10 hover:cursor-pointer" key={res.id}>
+                <h1>{res.name}</h1>
+                <div className="flex gap-2 items-center">
+                  <FiMapPin></FiMapPin>
+                  <p>{res.region}, {res.country}</p>
+                </div>
+                </div>
             ))}
           </div>
         )}
