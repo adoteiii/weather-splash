@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   return (
     data!==undefined?<nav className="top-0 py-3 z-[1000] bg-black w-full">
       <div className="container px-4 mx-auto relative text-sm">
-        <div className="flex justify-between items-center flex-wrap">
+        <div className="flex justify-between items-center flex-wrap gap-4">
           <Link href="/" className="hover:cursor-pointer">
             <Image
               height={32}
@@ -35,17 +35,17 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             />
           </Link>
 
-          <div className="flex justify-around items-center w-full sm:w-auto mt-4 sm:mt-0 flex-wrap sm:flex-nowrap">
+          <div className="flex justify-around gap-4 sm:gap-0 items-center w-full sm:w-auto sm:mt-0 flex-wrap sm:flex-nowrap">
             <Input 
-              handleSearch={(e)=>handleSearch()} 
+              
             
             />
 
-            <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-8 text-white">
+            <div className="flex justify-center w-full sm:w-auto sm:mt-0 h-8 items-center px-8 text-white">
               <LightDarkMode />
             </div>
 
-            <div className="relative flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
+            <div className="relative flex justify-center w-full sm:w-auto  sm:mt-0 h-8 items-center px-2 text-white">
               <img className="w-4 h-4" alt="notifications" src="assets/notification-bell.png" onClick={onAlertIconClick} />
               {alerts.length > 0 && (
                 <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
               )}
             </div>
 
-            <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
+            <div className="flex justify-center w-full sm:w-auto sm:mt-0 h-8 items-center px-2 text-white">
               <img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" />
             </div>
           </div>

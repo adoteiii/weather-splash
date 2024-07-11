@@ -15,11 +15,7 @@ export const LayoutManager = () => {
     let url: string = `http://api.weatherapi.com/v1/forecast.json?key=${
       process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY
     }&q=${
-      data
-        ? data?.location?.lat?.toString() +
-          "," +
-          data?.location?.lon?.toString()
-        : location
+      location
     }&days=7&aqi=yes&alerts=yes`;
     const response = await fetch(url);
     if (!response.ok) {

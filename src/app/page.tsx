@@ -12,14 +12,6 @@ const Home: React.FC = () => {
   const [alerts, setAlerts] = useState<any[]>([]); // State to store alerts
   const [showAlertsModal, setShowAlertsModal] = useState(false); // State to control modal visibility
 
- 
-  const handleSearch = async (e: React.KeyboardEvent<HTMLInputElement> | React.MouseEvent<HTMLButtonElement>) => {
-    if (('key' in e && e.key === 'Enter') || e.type === 'click') {
-      e.preventDefault();
-      
-    }
-  };
-
   return (
     <div className="bg-auto h-full">
       <div className="w-full rounded-lg flex flex-col h-fit">
