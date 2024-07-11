@@ -46,11 +46,13 @@ const BentoGrids: React.FC = () => {
           <div className="text-white font-normal text-start text-xs">
             {data.current.condition.text}
           </div>
+          
           <WeatherTimes
             times={[...data.forecast.forecastday[0].hour]
               .sort((a, b) => a.time_epoch - b.time_epoch)
+              .filter((hour)=>hour.time_epoch*1000 >= Date.now().valueOf())
               // .filter((hour) => (hour.time_epoch) >= new Date().getTime())
-              // .slice(0, 10)
+              .slice(0, 10)
               .map(
                 (hour: {
                   time: string;
@@ -79,7 +81,7 @@ const BentoGrids: React.FC = () => {
           <SevenDayForecast sevenDayForecast={sevenDayForecast} />
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 col-span-2 sm:col-span-1 gap-4">
           {[...data.forecast.forecastday]?.slice(-7, -1).map((fd) => {
             return (
               <div className="h-[120px] bg-[#2e2e2e80] pt-2 rounded-2xl">
