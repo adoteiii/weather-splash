@@ -1,16 +1,16 @@
 import React, { KeyboardEvent, MouseEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LightDarkMode from './LightDarkMode';
 import Input from './Input';
 import { useAppSelector } from '@/redux/store';
-import Loader from './Loader';
+import { ModeToggle } from "./ui/ModeToggle"
+
 
 
 interface NavbarProps {
-  
-  alerts: any[]; 
-  onAlertIconClick: () => void; // 
+
+  alerts: any[];
+  onAlertIconClick: () => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
@@ -21,14 +21,14 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   }
 
   return (
-    data!==undefined?<nav className="top-0 py-3 z-[1000] bg-black w-full">
+    data!==undefined?<nav className="top-0 py-3 z-[1000] w-full">
       <div className="container px-4 mx-auto relative text-sm">
         <div className="flex justify-between items-center flex-wrap gap-4">
           <Link href="/" className="hover:cursor-pointer">
             <Image
               height={32}
               width={32}
-              src="/assets/isolation-mode.svg"
+              src="/assets/weatherSplashLogo.svg"
               alt="Logo"
               unoptimized
               className="h-8 w-auto cursor-pointer ml-4 sm:ml-0 sm:justify-center"
@@ -42,7 +42,8 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             />
 
             <div className="flex justify-center w-full sm:w-auto sm:mt-0 h-8 items-center px-8 text-white">
-              <LightDarkMode />
+              <ModeToggle />
+              
             </div>
 
             <div className="relative flex justify-center w-full sm:w-auto  sm:mt-0 h-8 items-center px-2 text-white">
@@ -57,7 +58,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
             <Link href="/login" className="w-4 h-4">
                 <img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" />
-              </Link>
+            </Link>
             </div>
           </div>
         </div>

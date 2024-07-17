@@ -24,6 +24,7 @@ const MainBento: React.FC = () => {
       case 'Mist':
         return 'from-gray-600 to-gray-800';
       case 'Patchy rain possible':
+      case 'Patchy rain nearby':
       case 'Light rain':
       case 'Moderate rain':
       case 'Heavy rain':
@@ -46,7 +47,7 @@ const MainBento: React.FC = () => {
         </div>
         <div className="text-white text-5xl font-normal flex flex-col items-center">
           <span className="text-xs font-bold">{data?.location?.name?.toUpperCase()}</span>
-          <span>{data?.current?.temp_c}°</span>
+          <span>{Math.round(data?.current?.temp_c)}°</span>
         </div>
         <div className="text-white text-base font-normal text-center">
           {data?.forecast?.forecastday?.[0].day?.condition?.text}

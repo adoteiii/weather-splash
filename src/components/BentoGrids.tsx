@@ -1,72 +1,97 @@
 import React, { useEffect, useState } from "react";
-import WeatherTimes from "./WeatherTimes";
-import PrecipitationMap from "./PrecipitationMap";
-import SevenDayForecast from "./SevenDayForecast";
+import { Card } from "./ui/card";
+import PrecipitationMap from "./widgets/PrecipitationMap";
+import TenDayForecast from "./widgets/TenDayForcast";
+import HourlyForecast from "./widgets/HourlyForecast";
+import AirPollution from "./widgets/AirPollution";
+import OtherLargeCities from "@/components/widgets/OtherLargeCities";
+import WeatherWidgets from "./widgets/WeatherWidgets";
+
 import { useAppSelector } from "@/redux/store";
+import { getTenDayForecast } from "@/actions/getTenDayForecast";
+import { getHourlyData } from "@/actions/getHourlyData";
+import { getAirPollutionData } from "@/actions/getAirPollutionData";
+import { DEFAULT_LOCATION } from "@/lib/config";
+import {
+  HourlyForecastResponse,
+  AirPollutionResponse,
+  TenDayForecastData,
+  City,
+} from "@/lib/types";
 
 const BentoGrids: React.FC = () => {
-  const [sevenDayForecast, setSevenDayForecast] = useState<any[]>([]);
+  const [tenDayForecast, setTenDayForecast] =
+    useState<TenDayForecastData | null>(null);
+  const [hourlyData, setHourlyData] = useState<HourlyForecastResponse | null>(
+    null
+  );
+  const [airData, setAirData] = useState<AirPollutionResponse | null>(null);
+  const [city, setCity] = useState<City | null>(null);
   const data = useAppSelector((state) => state.DataReducer.value);
+
   useEffect(() => {
     if (!data) {
       return;
     }
-    const fetchSevenDayForecast = async () => {
+    const fetchForecasts = async () => {
       try {
-        const response = await fetch(
-          `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY}&q=${data.location.lat},${data.location.lon}&days=7`
-        );
-        const result = await response.json();
-        const forecast = result.forecast.forecastday.map((day: any) => ({
-          day: new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-            new Date(day.date)
-          ),
-          minTemperature: Math.round(day.day.mintemp_c),
-          maxTemperature: Math.round(day.day.maxtemp_c),
-          weatherCondition: day.day.condition.text,
-          weatherIcon: `https:${day.day.condition.icon}`,
-          precipitation: day.day.daily_chance_of_rain,
-        }));
-        setSevenDayForecast(forecast);
+        const forecastData: TenDayForecastData = await getTenDayForecast({
+          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
+          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+        });
+        setTenDayForecast(forecastData);
+
+        const hourlyData: HourlyForecastResponse = await getHourlyData({
+          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
+          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+        });
+        setHourlyData(hourlyData);
+
+        const airData: AirPollutionResponse = await getAirPollutionData({
+          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
+          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+        });
+        setAirData(airData);
+
+        const cityData: City = {
+          id: 0,
+          name: data.location.name,
+          coord: {
+            lon: data.location.lon,
+            lat: data.location.lat,
+          },
+          country: data.location.country,
+          population: 0,
+          timezone: 0,
+          sunrise: 0,
+          sunset: 0,
+        };
+        setCity(cityData);
       } catch (error) {
-        console.error("Error fetching the 7-day forecast:", error);
+        console.error("Failed to fetch forecasts:", error);
       }
     };
 
-    if (!!data) {
-      fetchSevenDayForecast();
-    }
+    fetchForecasts();
   }, [data]);
 
-  return data ? (
-    <div className="relative w-[927px] h-[624px]">
-      {/* {JSON.stringify(data)} */}
-      <div className="w-full h-full top-0 left-0 grid sm:grid-cols-3 sm:grid-rows-3 grid-cols-1  gap-4 p-4">
-        <div className="col-span-2 h-48 bg-[#2e2e2e80] rounded-2xl p-4">
-          <div className="text-white font-normal text-start text-xs">
-            {data.current.condition.text}
-          </div>
-          
-          <WeatherTimes
-            times={[...data.forecast.forecastday[0].hour]
-              .sort((a, b) => a.time_epoch - b.time_epoch)
-              .filter((hour)=>hour.time_epoch*1000 >= Date.now().valueOf())
-              // .filter((hour) => (hour.time_epoch) >= new Date().getTime())
-              .slice(0, 10)
-              .map(
-                (hour: {
-                  time: string;
-                  temp_c: number;
-                  condition: { text: string };
-                }) => ({
-                  time: new Date(hour.time).toLocaleTimeString([], {
-                    hour: "2-digit",
-                  }),
-                  temperature: Math.round(hour.temp_c),
-                  weatherCondition: hour.condition.text,
-                })
-              )}
-          />
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const hourlyForecastData = hourlyData?.forecast?.forecastday[0]?.hour || null;
+
+  return (
+    <div className="relative w-[1200px] h-[700px]">
+      <Card className="w-full h-full top-0 left-0 grid sm:grid-cols-3 sm:grid-rows-3 grid-cols-1 gap-4 p-4">
+        <div className="col-span-2 h-48 bg-[#2e2e2e80] rounded-2xl ">
+          {hourlyData &&
+          hourlyData.forecast &&
+          hourlyData.forecast.forecastday[0] ? (
+            <HourlyForecast data={hourlyData.forecast.forecastday[0].hour} />
+          ) : (
+            <p>Loading hourly data...</p>
+          )}
         </div>
 
         <div className="h-96 bg-[#2e2e2e80] rounded-2xl relative overflow-hidden">
@@ -77,33 +102,36 @@ const BentoGrids: React.FC = () => {
             <PrecipitationMap lat={data.location.lat} lon={data.location.lon} />
           </div>
         </div>
-        <div className="col-span-1 h-[390px] bg-[#2e2e2e80] rounded-2xl overflow-y-auto">
-          <SevenDayForecast sevenDayForecast={sevenDayForecast} />
+
+        <div className="col-span-1 h-[600px] row-auto bg-[#2e2e2e80] rounded-2xl overflow-hidden">
+          {tenDayForecast ? (
+            <TenDayForecast data={tenDayForecast} />
+          ) : (
+            <p>Loading 10-day forecast...</p>
+          )}
         </div>
 
-        <div className="grid grid-cols-2 col-span-2 sm:col-span-1 gap-4">
-          {[...data.forecast.forecastday]?.slice(-7, -1).map((fd) => {
-            return (
-              <div className="h-[120px] bg-[#2e2e2e80] pt-2 rounded-2xl">
-                <h1 className="px-3 pb-3">{new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(
-            new Date(fd.date))}</h1>
-                <h1 className="text-sm text-center">Wind Speed</h1>
-                <p className="font-bold text-center">{fd.day.maxwind_kph} KPH</p>
-                
-              </div>
-            );
-          })}
-
-          {/* <div className="h-[120px] bg-[#2e2e2e80] rounded-2xl"></div>
-          <div className="h-[120px] bg-[#2e2e2e80] rounded-2xl"></div>
-          <div className="h-[120px] bg-[#2e2e2e80] rounded-2xl"></div>
-          <div className="h-[120px] bg-[#2e2e2e80] rounded-2xl"></div>
-          <div className="h-[120px] bg-[#2e2e2e80] rounded-2xl"></div> */}
+        <div className="grid grid-cols-2 col-span-2 sm:col-span-1 gap-4 ">
+          {airData ? (
+            <AirPollution data={airData.current.air_quality} />
+          ) : (
+            <p>Loading air quality data...</p>
+          )}
         </div>
-      </div>
+      </Card>
+      <section className="grid h-full grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+        {hourlyForecastData && airData && city ? (
+          <WeatherWidgets
+            data={hourlyForecastData} // Pass the correct hourly data here
+            airQuality={airData}
+            city={city}
+          />
+        ) : (
+          <p>Loading weather widgets...</p>
+        )}
+        <OtherLargeCities />
+      </section>
     </div>
-  ) : (
-    <div></div>
   );
 };
 
