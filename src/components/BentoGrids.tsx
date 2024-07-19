@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "./ui/card";
-import PrecipitationMap from "./widgets/PrecipitationMap";
+import WeatherMap from "./widgets/PrecipitationMap";
 import TenDayForecast from "./widgets/TenDayForcast";
 import HourlyForecast from "./widgets/HourlyForecast";
 import AirPollution from "./widgets/AirPollution";
@@ -17,17 +17,19 @@ import {
   AirPollutionResponse,
   TenDayForecastData,
   City,
+  WeatherApiCurrentData
 } from "@/lib/types";
+import CurrentWeather from "./widgets/CurrentWeather";
+import { ClassNameValue } from 'tailwind-merge';
+import { AstronomyData } from '../lib/types';
+import { Sun } from "lucide-react";
 
 const BentoGrids: React.FC = () => {
-  const [tenDayForecast, setTenDayForecast] =
-    useState<TenDayForecastData | null>(null);
-  const [hourlyData, setHourlyData] = useState<HourlyForecastResponse | null>(
-    null
-  );
+  const [tenDayForecast, setTenDayForecast] = useState<TenDayForecastData | null>(null);
+  const [hourlyData, setHourlyData] = useState<HourlyForecastResponse | null>(null);
   const [airData, setAirData] = useState<AirPollutionResponse | null>(null);
   const [city, setCity] = useState<City | null>(null);
-  const data = useAppSelector((state) => state.DataReducer.value);
+  const data = useAppSelector((state) => state.DataReducer.value) as WeatherApiCurrentData;
 
   useEffect(() => {
     if (!data) {
@@ -36,20 +38,20 @@ const BentoGrids: React.FC = () => {
     const fetchForecasts = async () => {
       try {
         const forecastData: TenDayForecastData = await getTenDayForecast({
-          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
-          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+          lat: data.location.lat,
+          lon: data.location.lon,
         });
         setTenDayForecast(forecastData);
 
         const hourlyData: HourlyForecastResponse = await getHourlyData({
-          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
-          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+          lat: data.location.lat,
+          lon: data.location.lon,
         });
         setHourlyData(hourlyData);
 
         const airData: AirPollutionResponse = await getAirPollutionData({
-          lat: parseFloat(DEFAULT_LOCATION.coord.lat),
-          lon: parseFloat(DEFAULT_LOCATION.coord.lon),
+          lat: data.location.lat,
+          lon: data.location.lon,
         });
         setAirData(airData);
 
@@ -62,9 +64,13 @@ const BentoGrids: React.FC = () => {
           },
           country: data.location.country,
           population: 0,
-          timezone: 0,
-          sunrise: 0,
-          sunset: 0,
+          timezone: new Date().getTimezoneOffset() * -60, // Convert to seconds
+          sunrise: "",
+          sunset: "",
+          astronomy: {
+            sunrise: "",
+            sunset: ""
+          }
         };
         setCity(cityData);
       } catch (error) {
@@ -79,58 +85,43 @@ const BentoGrids: React.FC = () => {
     return <div>Loading...</div>;
   }
 
-  const hourlyForecastData = hourlyData?.forecast?.forecastday[0]?.hour || null;
+  const hourlyForecastData = hourlyData?.forecast?.forecastday[0]?.hour || [];
 
   return (
-    <div className="relative w-[1200px] h-[700px]">
-      <Card className="w-full h-full top-0 left-0 grid sm:grid-cols-3 sm:grid-rows-3 grid-cols-1 gap-4 p-4">
-        <div className="col-span-2 h-48 bg-[#2e2e2e80] rounded-2xl ">
-          {hourlyData &&
-          hourlyData.forecast &&
-          hourlyData.forecast.forecastday[0] ? (
+    <div className="relative w-[1260px] h-[600px]">
+
+
+      <Card className="flex flex-col gap-4 md:flex-row">
+        <div className="flex w-full min-w-[18rem] flex-col gap-4 md:w-1/2">
+            {hourlyForecastData.length > 0 && city && (
+              <CurrentWeather data={hourlyForecastData} city={city} />
+            )}
+
+            {tenDayForecast ? (
+              <TenDayForecast data={tenDayForecast}  />
+            ) : (
+              <p>Loading 10-day forecast...</p>
+            )}
+        </div>
+        <section className="grid h-full grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+          {hourlyForecastData && airData && city ? (
+            <WeatherWidgets data={hourlyForecastData} airQuality={airData} city={city} />
+          ) : (
+            <p>Loading weather widgets...</p>
+          )}
+
+          {hourlyData && hourlyData.forecast && hourlyData.forecast.forecastday[0] ? (
             <HourlyForecast data={hourlyData.forecast.forecastday[0].hour} />
           ) : (
             <p>Loading hourly data...</p>
           )}
-        </div>
 
-        <div className="h-96 bg-[#2e2e2e80] rounded-2xl relative overflow-hidden">
-          <div className="absolute top-2 left-2 text-sm font-bold z-10 text-white">
-            <h3>Precipitation Map</h3>
-          </div>
-          <div style={{ height: "100%", width: "100%" }}>
-            <PrecipitationMap lat={data.location.lat} lon={data.location.lon} />
-          </div>
-        </div>
+            <WeatherMap lat={data.location.lat} lon={data.location.lon} />
 
-        <div className="col-span-1 h-[600px] row-auto bg-[#2e2e2e80] rounded-2xl overflow-hidden">
-          {tenDayForecast ? (
-            <TenDayForecast data={tenDayForecast} />
-          ) : (
-            <p>Loading 10-day forecast...</p>
-          )}
-        </div>
+          <OtherLargeCities />
 
-        <div className="grid grid-cols-2 col-span-2 sm:col-span-1 gap-4 ">
-          {airData ? (
-            <AirPollution data={airData.current.air_quality} />
-          ) : (
-            <p>Loading air quality data...</p>
-          )}
-        </div>
+        </section>
       </Card>
-      <section className="grid h-full grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
-        {hourlyForecastData && airData && city ? (
-          <WeatherWidgets
-            data={hourlyForecastData} // Pass the correct hourly data here
-            airQuality={airData}
-            city={city}
-          />
-        ) : (
-          <p>Loading weather widgets...</p>
-        )}
-        <OtherLargeCities />
-      </section>
     </div>
   );
 };

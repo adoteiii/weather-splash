@@ -60,7 +60,19 @@
     --chart-5: ;
   }
 
-
+  .scrollable-content {
+    overflow-y: scroll; /* Ensure the content is scrollable */
+  }
+  
+  .scrollable-content::-webkit-scrollbar {
+    width: 0; /* Hide the scrollbar */
+    background: transparent; /* Optional: make the scrollbar's track invisible */
+  }
+  .scrollable-content {
+    overflow-y: scroll; /* Ensure the content is scrollable */
+    -ms-overflow-style: none; /* Hide the scrollbar for IE and Edge */
+  }
+    
 
 * {
     @apply border-border;

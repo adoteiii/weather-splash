@@ -168,6 +168,20 @@ export type UVIndexResponse = {
   daily: DailyData;
 };
 
+// types.ts
+export type AstronomyData = {
+  sunrise: string;
+  sunset: string;
+};
+
+export type AstronomyResponse = {
+  astronomy: {
+    astro: AstronomyData;
+  };
+};
+
+
+
 export type City = {
   id: number;
   name: string;
@@ -178,8 +192,9 @@ export type City = {
   country: string;
   population: number;
   timezone: number;
-  sunrise: number;
-  sunset: number;
+  sunrise: string;
+  sunset: string;
+   astronomy: AstronomyData;
 };
 
 type Weather = {

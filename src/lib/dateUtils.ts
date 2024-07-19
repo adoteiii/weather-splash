@@ -26,24 +26,49 @@ export function convertToDate(localtime: string, dateEpoch: number, format: stri
  * @param {string} time - The time string in 'HH:MM' format.
  * @returns {string} - The formatted time string in 'h:MM AM/PM' format.
  */
-export function formatSunTimeWithAMPM(sunset: number, timezoneOffset: number): string {
-  // Create a Date object for the sunset time
-  const sunsetDate = new Date(sunset * 1000); // assuming sunset is in seconds
+
+
+export function formatSunTimeWithAMPM(sunTime: string, timezoneOffset: number): string {
+  // Log the raw sun time
+  console.log('Raw Sun Time (string):', sunTime);
+
+  // Create a Date object for the sun time
+  const [time, period] = sunTime.split(' '); // assuming sunTime is in "hh:mm AM/PM" format
+  const [hours, minutes] = time.split(':').map(Number);
+
+  let sunDate = new Date();
+  sunDate.setHours(hours + (period === 'PM' && hours !== 12 ? 12 : 0));
+  sunDate.setMinutes(minutes);
+  sunDate.setSeconds(0);
+
+  // Log the initial sun time in UTC
+  console.log('Sun Time UTC Date:', sunDate.toUTCString());
 
   // Calculate the local time using the timezone offset (in minutes)
-  const localTime = new Date(sunsetDate.getTime() + timezoneOffset * 60000);
+  const localTime = new Date(sunDate.getTime() + timezoneOffset * 60000);
+
+  // Log the local time after applying timezone offset
+  console.log('Local Time Date:', localTime.toString());
 
   // Extract hours and minutes
-  let hours = localTime.getUTCHours();
-  const minutes = localTime.getUTCMinutes();
+  let localHours = localTime.getHours();
+  const localMinutes = localTime.getMinutes();
+
+  // Log extracted hours and minutes
+  console.log('Extracted Hours:', localHours);
+  console.log('Extracted Minutes:', localMinutes);
 
   // Determine AM/PM
-  const period = hours >= 12 ? 'PM' : 'AM';
+  const localPeriod = localHours >= 12 ? 'PM' : 'AM';
 
   // Convert hours to 12-hour format
-  hours = hours % 12 || 12;
+  localHours = localHours % 12 || 12;
 
   // Return formatted time
-  return `${hours}:${minutes.toString().padStart(2, '0')} ${period}`;
-}
+  const formattedTime = `${localHours}:${localMinutes.toString().padStart(2, '0')} ${localPeriod}`;
 
+  // Log the final formatted time
+  console.log('Formatted Time:', formattedTime);
+
+  return formattedTime;
+}

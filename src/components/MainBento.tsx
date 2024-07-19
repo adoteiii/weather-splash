@@ -40,6 +40,7 @@ const MainBento: React.FC = () => {
   };
 
   return (
+    
     data?<div className="flex justify-center items-center h-[184px]">
       <div className={`w-64 h-full rounded-3xl bg-gradient-to-b ${getGradientColor(data?.current?.condition?.text)} flex flex-col justify-between p-4`}>
         <div className="text-white text-2xl font-medium text-center">

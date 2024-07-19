@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/redux/provider";
 import { LayoutManager } from "@/components/Layout";
+import { NextThemesProvider } from "@/components/providers/NextThemesProvider"
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,13 +20,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className}`}>
+      <NextThemesProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
         <ReduxProvider>
           <>
             <LayoutManager ></LayoutManager>
             {children}
           </>
         </ReduxProvider>
+        </NextThemesProvider>
         
       </body>
     </html>

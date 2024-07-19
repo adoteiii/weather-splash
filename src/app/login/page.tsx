@@ -1,80 +1,79 @@
-import React from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import Navbar2 from '@/components/Navbar2';
+"use client"
+
+import Image from "next/image"
+import Link from "next/link"
+
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import Navbar2 from "@/components/Navbar2"
+import BackgroundVideo from "@/components/BackgroundVideo"
 
 const Login: React.FC = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-cover bg-center backdrop:blur-md ">
+    <div>
+      
       <Navbar2 />
-      <div className="flex flex-col md:flex-row justify-between items-center p-12"></div>
       <div className="">
-        <video
-          className="absolute top-0 left-0 w-full h-full object-cover z-[-1] pointer-events-none"
-          autoPlay
-          muted
-          src="/assets/WeatherSplashBG.mp4"
-          loop
-          playsInline
-          preload="metadata"
-          
-        >
-          Your browser does not support the video tag.
-        </video>
+       <BackgroundVideo />
       </div>
+      
 
-      <div className="bg-white bg-opacity-10 p-8 rounded-3xl shadow-lg max-w-md w-full backdrop-blur">
-        <h2 className="text-center text-xl font-medium mb-6">Login</h2>
-        <form>
-          <div className="mb-4">
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <input
+       <div className="flex items-center justify-center min-h-screen bg-cover bg-center backdrop:blur-md" >
+       <Card className="mx-auto max-w-sm">
+      <CardHeader>
+        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardDescription>
+          Enter your email below to login to your account
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
               type="email"
-              className="w-full px-4 py-2 border rounded-full text-sm bg-transparent backdrop-blur shadow-sm"
-              placeholder="Email"
+              placeholder="m@example.com"
+              required
             />
           </div>
-          <div className="mb-6">
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border rounded-full text-sm bg-transparent backdrop-blur shadow-sm"
-              placeholder="Password"
-            />
+          <div className="grid gap-2">
+            <div className="flex items-center">
+              <Label htmlFor="password">Password</Label>
+              <Link href="#" className="ml-auto inline-block text-sm underline">
+                Forgot your password?
+              </Link>
+            </div>
+            <Input id="password" type="password" required />
           </div>
-          <button
-            type="submit"
-            className="w-full py-2 bg-red-500 text-white rounded-full text-sm font-medium"
-          >
-            LOGIN
-          </button>
-          <div className="flex justify-between text-sm mt-4">
-            <a href="#" className="text-white">Forgot Password?</a>
-            <a href="#" className="text-white">Sign Up</a>
-          </div>
-        </form>
-        <div className="flex items-center mt-6">
-          <div className="flex-grow border-t border-gray-300 opacity-20"></div>
+          <Button type="submit" className="w-full">
+            Login
+          </Button>
+          <Button variant="outline" className="w-full">
+            Login with Google
+          </Button>
         </div>
-
-        <div className="flex justify-center mt-6">
-          <span className="flex-shrink mx-4 text-white">OR LOGIN WITH</span>
+        <div className="mt-4 text-center text-sm">
+          Don&apos;t have an account?{" "}
+          <Link href="/signup" className="underline">
+            Sign up
+          </Link>
         </div>
-        <div className="flex justify-center mt-4">
-          <button className="text-white rounded-lg">
-            <Image
-              height={64}
-              width={64}
-              src="/assets/google_icon.svg"
-              alt="Google Logo"
-              unoptimized
-              className="h-8 w-auto cursor-pointer ml-4 sm:ml-0 sm:justify-center"
-            />
-          </button>
-        </div>
-      </div>
+      </CardContent>
+    </Card>
     </div>
-  );
-};
+    </div>
 
-export default Login;
+   
+    
+  )
+}
+export default Login
