@@ -27,6 +27,7 @@ const getAirQualityDescription = (aqi: number): string => {
 };
 
 const AirPollution: React.FC<AirPollutionProps> = ({ data, className }) => {
+  //@ts-ignore
   const aqi = data["us-epa-index"];
 
   return (
