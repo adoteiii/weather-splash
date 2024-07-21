@@ -23,6 +23,10 @@ export default function TenDayForecast({ data }: TenDayForecastProps) {
   const minTemperature = Math.min(...temperatures.map((temp) => temp.min));
   const maxTemperature = Math.max(...temperatures.map((temp) => temp.max));
 
+  // Log the data to debug
+  console.log('Forecast data:', data);
+  console.log('Number of forecast days:', data.forecast.forecastday.length);
+
   return (
     <Card className="h-[38rem] overflow-hidden">
       <CardHeader>
@@ -45,9 +49,7 @@ export default function TenDayForecast({ data }: TenDayForecastProps) {
           <div key={item.date_epoch}>
             <div className="flex w-full flex-row items-center justify-between gap-2 last:mb-0">
               <p className="min-w-[3rem] font-medium">
-                {i === 0
-                  ? "Today"
-                  : getAbbreviatedDay(item.date_epoch)}
+                {i === 0 ? "Today" : getAbbreviatedDay(item.date_epoch)}
               </p>
               <IconComponent
                 weatherCode={item.day.condition.code}

@@ -14,7 +14,12 @@ export async function getTenDayForecast({ lat, lon }: { lat: number; lon: number
   }
 
   const data = await response.json();
+  
+  // Log the entire API response
+  console.log('API response data:', data);
+  
+  // Log the length of the forecastday array
+  console.log('Number of forecast days:', data.forecast.forecastday.length);
 
-  // Transform the data to match your TenDayForecastData type if necessary
   return data as TenDayForecastData;
 }
