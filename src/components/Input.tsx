@@ -53,6 +53,7 @@ const Input: React.FC<InputProps> = () => {
   };
 
   useEffect(() => {
+    
     if (!search || search.length < 3) {
       return;
     }
@@ -82,12 +83,14 @@ const Input: React.FC<InputProps> = () => {
             onFocus={() => setShowSuggestions(true)} // Show suggestions on focus
             onBlur={() => setShowSuggestions(false)} // Hide suggestions on blur
             value={search}
-            onChange={(e) => setSearch(e.currentTarget.value)}
+            onChange={(e) => {
+              setShowSuggestions(true)
+              setSearch(e.currentTarget.value)}}
             className="ml-2 bg-transparent border-none text-white text-xs focus:outline-none flex-1"
           />
         </div>
         {showSuggestions && searchResults && (
-          <div className="absolute z-50 min-h-[150px] max-h-[200px] overflow-hidden mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
+          <div className="absolute overflow-scroll z-50 min-h-[150px] max-h-[200px] min-w-[200px] mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
             {searchResults.map((res) => (
               <div
                 onMouseDown={(e) => {

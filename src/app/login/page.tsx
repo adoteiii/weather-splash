@@ -41,7 +41,12 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    await signInWithGoogle()
+    const v = await signInWithGoogle()
+    if (v===true){
+      router.push("/");
+    } else {
+      alert(v?.error)
+    }
   };
 
   return (
