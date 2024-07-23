@@ -28,9 +28,16 @@ const Input: React.FC<InputProps> = () => {
   const selectItem = (item: string) => {
     setSearchResults(null);
     dispatch(setLocation(item));
-    setSearch(item);
-    setShowSuggestions(false); // Hide suggestions on selection
+    // setSearch(item);
+    // setShowSuggestions(false); // Hide suggestions on selection
   };
+
+  useEffect(()=>{
+    if (search!==location){
+      setSearch(location)
+      setShowSuggestions(false)
+    }
+  }, [location])
 
   const querySearch = () => {
     fetch(

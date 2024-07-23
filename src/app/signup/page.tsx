@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import firebase from "@/lib/firebase/clientApp";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import Navbar2 from "@/components/Navbar2";
 import BackgroundVideo from "@/components/BackgroundVideo";
+import { createUserWithEmailAndPassword, signInWithGoogle, updateProfile } from "@/lib/firebase/auth";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -25,16 +25,19 @@ const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const router = useRouter(); // Use router for navigation
-
+  
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const user = userCredential.user;
+      const userCredential: any = await createUserWithEmailAndPassword({email, password});
+      const user = userCredential?.user;
+      console.log(userCredential)
+      if (!user){
+        alert('An error occurred, '+userCredential?.error);
+        return
+      }
       // Optionally, update the user profile with additional info
-      await user?.updateProfile({
-        displayName: `${firstName} ${lastName}`,
-      });
+      await updateProfile(user,`${firstName} ${lastName}`);
       router.push("/"); // Redirect to home page upon successful signup
     } catch (error) {
       if (error instanceof Error) {
@@ -48,10 +51,15 @@ const SignUp: React.FC = () => {
   };
 
   const handleGoogleSignUp = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
+    
     try {
-      await firebase.auth().signInWithPopup(provider);
-      router.push("/"); // Redirect to home page upon successful signup
+      const valid = await signInWithGoogle()
+      if (valid){
+        router.push("/"); // Redirect to home page upon successful signup
+      } else {
+        alert('Invalid credentials')
+      }
+      
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error signing in with Google", error);

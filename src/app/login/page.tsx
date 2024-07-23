@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import firebase from "@/lib/firebase/clientApp";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
@@ -18,6 +17,7 @@ import {
 } from "@/components/ui/card";
 import Navbar2 from "@/components/Navbar2";
 import BackgroundVideo from "@/components/BackgroundVideo";
+import { signInWithEmailAndPassword, signInWithGoogle } from "@/lib/firebase/auth";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword({email, password});
       router.push("/"); // Redirect to home page upon successful login
     } catch (error) {
       if (error instanceof Error) {
@@ -41,19 +41,7 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    try {
-      await firebase.auth().signInWithPopup(provider);
-      router.push("/"); // Redirect to home page upon successful login
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error("Error signing in with Google", error);
-        alert(error.message);
-      } else {
-        console.error("Unknown error", error);
-        alert("An unknown error occurred");
-      }
-    }
+    await signInWithGoogle()
   };
 
   return (

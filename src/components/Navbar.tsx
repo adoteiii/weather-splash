@@ -1,4 +1,4 @@
-import React, { KeyboardEvent, MouseEvent } from 'react';
+import React, { KeyboardEvent, MouseEvent, useContext } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Input from './Input';
@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from './ui/button';
+import { AuthorizationContext } from '@/lib/userContext';
 
 
 
@@ -26,6 +27,8 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   const handleSearch = ()=>{
     console.log('event')
   }
+
+  const {user, loading} = useContext(AuthorizationContext)
 
   return (
     data!==undefined?<nav className="top-0 py-3 z-[1000] w-full">
@@ -63,10 +66,10 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             </div>
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
-            <Link href="/signup" className="w-4 h-4">
+            {/* <Link href="/signup" className="w-4 h-4">
                
-            </Link>
-            <Popover>
+            </Link> */}
+            {(!loading && user===null)?<Popover>
               <PopoverTrigger><img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" /></PopoverTrigger>
               <PopoverContent>
               <div className="grid gap-4">
@@ -91,8 +94,8 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
               
               </PopoverContent>
 
-              </Popover>
-
+              </Popover>: <Image width={40} height={40} className='w-6 h-6 rounded-full' alt='profile photo' src={user?.photoURL||'/assets/person-fill-1.svg'}></Image>}
+             
             
             </div>
           </div>
