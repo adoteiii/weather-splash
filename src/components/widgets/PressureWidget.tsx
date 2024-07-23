@@ -72,13 +72,26 @@ export default function PressureWidget({ data }: PressureWidgetProps) {
       <CardHeader>
         <CardTitle>
           <i>
-            {/* SVG Icon */}
+          <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+              >
+                <path d="m12 14 4-4" />
+                <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+              </svg>
           </i>
           Pressure
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p>{pressure_mb} mb</p>
+      <p>{(pressure_mb * 0.0295301).toFixed(2)} inHg</p>
+
       </CardContent>
       <CardFooter>
         <p>{pressureDescription}</p>

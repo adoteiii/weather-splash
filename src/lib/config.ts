@@ -50,43 +50,43 @@ export const DEFAULT_SUGGESTIONS = [
 
 export const OTHER_LARGE_CITIES = [
   {
-    city: "New York",
-    country: "United States",
+    city: "Accra",
+    country: "Ghana",
     coord: {
-      lat: "40.7127753",
-      lon: "-74.0059728"
+      lat: "5.603716",
+      lon: "-0.203224"
     }
   },
   {
-    city: "Shanghai",
-    country: "China",
+    city: "Kumasi",
+    country: "Ghana",
     coord: {
-      lat: "31.2222226",
-      lon: "121.458069"
+      lat: "6.688980",
+      lon: "-1.624489"
     }
   },
   {
-    city: "Tokyo",
-    country: "Japan",
+    city: "Tamale",
+    country: "Ghana",
     coord: {
-      lat: "35.6764225",
-      lon: "139.650027"
+      lat: "9.402790",
+      lon: "-0.825580"
     }
   },
   {
-    city: "Sydney",
-    country: "Australia",
+    city: "Takoradi",
+    country: "Ghana",
     coord: {
-      lat: "-33.8688197",
-      lon: "151.2092955"
+      lat: "4.894441",
+      lon: "-1.768199"
     }
   },
   {
-    city: "São Paulo",
-    country: "Brazil",
+    city: "Cape Coast",
+    country: "Ghana",
     coord: {
-      lat: "-23.5475493",
-      lon: "-46.6358888"
+      lat: "5.105614",
+      lon: "-1.246179"
     }
   }
 ];
