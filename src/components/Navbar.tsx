@@ -4,6 +4,13 @@ import Image from 'next/image';
 import Input from './Input';
 import { useAppSelector } from '@/redux/store';
 import { ModeToggle } from "./ui/ModeToggle"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Button } from './ui/button';
+
 
 
 
@@ -57,8 +64,36 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
 
             <div className="flex justify-center w-full sm:w-auto mt-4 sm:mt-0 h-8 items-center px-2 text-white">
             <Link href="/signup" className="w-4 h-4">
-                <img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" />
+               
             </Link>
+            <Popover>
+              <PopoverTrigger><img className="w-4 h-4" alt="person" src="assets/person-fill-1.svg" /></PopoverTrigger>
+              <PopoverContent>
+              <div className="grid gap-4">
+             
+              <Button>
+              <Link href="/login" className="">
+                <div className="space-y-2">
+                  <h4 className="font-medium leading-none">Login</h4>
+                </div>
+                </Link>
+                </Button>
+               
+                
+                <Button>
+                <Link href="/signup" className="">
+                  <div className="space-y-2">
+                    <h4 className="font-medium leading-none">Sign up</h4>
+                  </div>
+                </Link>
+                </Button>
+              </div>
+              
+              </PopoverContent>
+
+              </Popover>
+
+            
             </div>
           </div>
         </div>
