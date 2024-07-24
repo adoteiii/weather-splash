@@ -1,4 +1,11 @@
-import React, { KeyboardEvent, MouseEvent, useContext, useState } from "react";
+import React, {
+  KeyboardEvent,
+  MouseEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Input from "./Input";
@@ -33,18 +40,37 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   const data = useAppSelector((state) => state.DataReducer.value);
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
-  const [userLocation, setUserLocation] = useState('')
+  const [userLocation, setUserLocation] = useState("");
+  const dropdown = useRef<any>(null);
+  const trigger = useRef<any>(null);
   const handleSearch = () => {
     console.log("event");
   };
 
   const { user, loading } = useContext(AuthorizationContext);
+  useEffect(() => {
+    const clickHandler = ({ target }: any) => {
+      if (!dropdown.current) return;
+      if (
+        !profileDialogOpen ||
+        dropdown.current.contains(target) ||
+        trigger?.current?.contains(target)
+      )
+        return;
+      setProfileDialogOpen(false);
+    };
+    document.addEventListener("click", clickHandler);
+    return () => document.removeEventListener("click", clickHandler);
+  }, [profileDialogOpen]);
 
   return data !== undefined ? (
     <>
       {profileDialogOpen && (
         <div className="fixed left-0 h-screen flex justify-center items-center w-full top-0 bg-black/60 z-[2000] ">
-          <div className="dark:bg-black bg-white w-full max-w-[800px] rounded-xl border p-5">
+          <div
+            ref={dropdown}
+            className="dark:bg-black bg-white w-full max-w-[800px] rounded-xl border p-5"
+          >
             <div className="relative flex w-full items-center justify-center">
               <Image
                 alt="profile image full"
@@ -76,7 +102,15 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             </div>
             <div className="mt-10 px-20 flex gap-2 flex-col">
               <p className="text-md font-bold">User Location</p>
-              <div className="flex gap-3 items-center"><Edit className="text-gray-400"></Edit><input className="bg-gray-200 dark:bg-gray-700 px-3 py-2" type="text" value={userLocation} onChange={(e)=>setUserLocation(e.currentTarget.value)}/></div>
+              <div className="flex gap-3 items-center">
+                <Edit className="text-gray-400"></Edit>
+                <input
+                  className="bg-gray-200 dark:bg-gray-700 px-3 py-2"
+                  type="text"
+                  value={userLocation}
+                  onChange={(e) => setUserLocation(e.currentTarget.value)}
+                />
+              </div>
             </div>
             <div className="my-8 px-20 flex gap-2 flex-col">
               <p className="text-md font-bold">User Preferences</p>
@@ -187,6 +221,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
+                        ref={trigger}
                         className="group-hover:cursor-pointer"
                         onClick={() => {
                           setProfileDialogOpen(true);
