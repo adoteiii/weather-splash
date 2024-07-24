@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/redux/store";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { HourlyForecastData } from "@/lib/types";
 
@@ -7,7 +8,7 @@ interface VisibilityWidgetProps {
 
 export default function VisibilityWidget({ data }: VisibilityWidgetProps) {
   console.log("VisibilityWidget data:", data);
-
+  const units = useAppSelector(state=>state.UnitReducer.value)
   if (!data || data.length === 0) {
     console.log("No data available for VisibilityWidget");
     return (
@@ -55,6 +56,7 @@ export default function VisibilityWidget({ data }: VisibilityWidgetProps) {
   }
 
   const vis_km = currentHourData.vis_km;
+  const vis_mi = currentHourData.vis_miles;
   let visibilityDescription = "";
 
   if (vis_km >= 10) {
@@ -93,7 +95,7 @@ export default function VisibilityWidget({ data }: VisibilityWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p>{vis_km} km</p>
+        {units.visibilityUnit === 'km'?<p>{vis_km} km</p>:<p>{vis_mi} miles</p>}
       </CardContent>
       <CardFooter>
         <p>{visibilityDescription}</p>

@@ -26,6 +26,11 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setUnits } from "@/redux/features/unitSlice";
+import { UnitData } from "@/types/data";
+import { writeToDoc } from "@/lib/firebase/firestore";
 
 interface ProfileDialogProps {
   open: boolean;
@@ -35,6 +40,21 @@ interface ProfileDialogProps {
 const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
   const { user } = useContext(AuthorizationContext);
   const [userLocation, setUserLocation] = useState("");
+  const units = useAppSelector(state=>state.UnitReducer.value)
+  const dispatch = useDispatch<AppDispatch>()
+
+  const handleUnitChange = (temperature: string|undefined, pressure: string|undefined, visibility: string|undefined) => {
+    const unit = {
+      temperature: temperature||units.temperature,
+      pressure: pressure||units.pressure,
+      visibilityUnit: visibility||units.visibilityUnit
+    }
+    dispatch(setUnits(unit as UnitData))
+    if (!user?.uid){
+      return
+    }
+    writeToDoc('preferences', user?.uid, unit)
+  }
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -92,16 +112,16 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
             
           <p className="text-md font-semibold">User Preferences</p>
           <div className="flex items-center gap-6 flex-wrap">
-          <Select>
+          <Select value={units.temperature} onValueChange={(e)=>handleUnitChange(e, undefined, undefined)}>
             <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Temporature Unit" />
+                <SelectValue placeholder="Temperature Unit" />
              </SelectTrigger>
              <SelectContent>
-                <SelectItem value="°C">°C</SelectItem>
-                <SelectItem value="°F">°F</SelectItem>
+                <SelectItem value="C">°C</SelectItem>
+                <SelectItem value="F">°F</SelectItem>
              </SelectContent>
           </Select>
-          <Select>
+          <Select value={units.pressure} onValueChange={(e)=>handleUnitChange(undefined, e, undefined)}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pressure Unit" />
              </SelectTrigger>
@@ -110,13 +130,13 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
                 <SelectItem value="hPa">hPa</SelectItem>
              </SelectContent>
           </Select>
-          <Select>
+          <Select value={units.visibilityUnit} onValueChange={(e)=>handleUnitChange(undefined, undefined, e)}>
             <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Visibility Unit" />
              </SelectTrigger>
              <SelectContent>
                 <SelectItem value="km">km</SelectItem>
-                <SelectItem value="mm">mm</SelectItem>
+                <SelectItem value="mi">mi</SelectItem>
              </SelectContent>
           </Select>
           </div>

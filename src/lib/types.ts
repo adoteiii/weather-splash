@@ -244,6 +244,8 @@ export interface TenDayForecastData {
         day: {
           mintemp_c: number;
           maxtemp_c: number;
+          mintemp_f: number;
+          maxtemp_f: number;
           condition: {
             code: number;
           };

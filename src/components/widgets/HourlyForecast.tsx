@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle } from "../ui/card";
 import { useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import IconComponent from "../ui/icon-component";
+import { useAppSelector } from "@/redux/store";
 
 interface HourlyForecastProps {
   data: HourlyForecastData[];
@@ -18,6 +19,8 @@ export default function HourlyForecast({ data }: HourlyForecastProps) {
     hours = hours ? hours : 12; // Handle midnight (0 hours)
     return `${hours}${ampm}`;
   }
+
+  const units = useAppSelector((state) => state.UnitReducer.value);
 
   const ref =
     useRef<HTMLDivElement>() as React.MutableRefObject<HTMLInputElement>;
@@ -79,8 +82,12 @@ export default function HourlyForecast({ data }: HourlyForecastProps) {
                 )}
               </div>
               <div className="flex justify-center">
-                {item.temp_c !== undefined
-                  ? `${Math.floor(item.temp_c)}°`
+                {units.temperature === "C"
+                  ? item.temp_c !== undefined
+                    ? `${Math.floor(item.temp_c)}°`
+                    : "N/A"
+                  : item.temp_f !== undefined
+                  ? `${Math.floor(item.temp_f)}°`
                   : "N/A"}
               </div>
             </div>

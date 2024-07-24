@@ -1,8 +1,10 @@
 "use client";
 
+import { fetchAndReturn, fetchAndReturnOrderedLimit } from "@/lib/firebase/fetchData";
 import { writeToDoc } from "@/lib/firebase/firestore";
 import { AuthorizationContext } from "@/lib/userContext";
 import { setData } from "@/redux/features/dataSlice";
+import { setSearchHistory } from "@/redux/features/searchHistorySlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { WeatherData } from "@/types/data";
 import { useContext, useEffect } from "react";
@@ -13,6 +15,7 @@ import { v4 } from "uuid";
 export const LayoutManager = () => {
   const dispatch = useDispatch<AppDispatch>();
   const data = useAppSelector((state) => state.DataReducer.value);
+  const searchHistory = useAppSelector(state=>state.SearchHistoryReducer.value)
   const location = useAppSelector((state) => state.LocationReducer.value);
   const {user, loading} = useContext(AuthorizationContext)
   const fetchData = async () => {
@@ -37,11 +40,23 @@ export const LayoutManager = () => {
         if (!user?.uid){
           return
         }
-        writeToDoc('searchHistory', v4(), {uid: user.uid, location: data_.location})
+        writeToDoc('searchHistory', v4(), {uid: user.uid, location: data_.location, timestamp: Date.now()})
+        dispatch(setSearchHistory([{uid: user.uid, location: data_.location, timestamp: Date.now()}, ...searchHistory]))
       })
       .catch(() => {
         toast.error("Cannot find city");
       });
   }, [dispatch, location]);
+
+  useEffect(()=>{
+    if (!user?.uid){
+      return
+    }
+    // get location history
+    fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5).then((data)=>{
+      dispatch(setSearchHistory(data))
+      console.log(data)
+    })
+  }, [user])
   return <></>;
 };

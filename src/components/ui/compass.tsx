@@ -1,13 +1,16 @@
+import { useAppSelector } from "@/redux/store"
+
 interface CompassProps {
   speed: number
   deg: number
 }
 export default function Compass({ speed, deg }: CompassProps) {
+  const units = useAppSelector((state)=>state.UnitReducer.value)
   return (
     <>
       <div className="relative -mt-5 flex h-[10rem] w-[10rem] items-center justify-center md:-mt-5 md:h-[9rem] md:w-[9rem]">
         <div className="absolute text-xs font-medium ">
-          {Math.round(speed)}KM/H
+          {Math.round(speed)}{units.visibilityUnit === 'km'?'KM/H':"MPH"}
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"

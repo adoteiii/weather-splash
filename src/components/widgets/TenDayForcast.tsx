@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { TemperatureRange } from "../ui/temperature-range";
 import IconComponent from "../ui/icon-component";
 import { Separator } from "../ui/separator";
+import { useAppSelector } from "@/redux/store";
 
 // Helper function to convert Unix timestamp to abbreviated weekday name
 const getAbbreviatedDay = (dateEpoch: number): string => {
@@ -16,9 +17,11 @@ interface TenDayForecastProps {
 }
 
 export default function TenDayForecast({ data }: TenDayForecastProps) {
+  const units = useAppSelector(state=>state.UnitReducer.value)
+    
   const temperatures = data.forecast.forecastday.map((item) => ({
-    min: item.day.mintemp_c,
-    max: item.day.maxtemp_c,
+    min: units.temperature === 'C'?item.day.mintemp_c:item.day.mintemp_f,
+    max: units.temperature === 'C'?item.day.maxtemp_c:item.day.maxtemp_f,
   }));
   const minTemperature = Math.min(...temperatures.map((temp) => temp.min));
   const maxTemperature = Math.max(...temperatures.map((temp) => temp.max));
@@ -26,7 +29,7 @@ export default function TenDayForecast({ data }: TenDayForecastProps) {
   // Log the data to debug
   console.log('Forecast data:', data);
   console.log('Number of forecast days:', data.forecast.forecastday.length);
-
+  
   return (
     <Card className="h-[38rem] overflow-hidden">
       <CardHeader>
@@ -132,15 +135,15 @@ export default function TenDayForecast({ data }: TenDayForecastProps) {
               <div className="flex w-[60%] flex-row gap-2 overflow-hidden">
                 <div className="flex w-full select-none flex-row items-center justify-between gap-2 pr-2 text-sm">
                   <p className="flex w-[3rem] min-w-fit justify-end text-neutral-600 dark:text-neutral-400">
-                    {Math.floor(item.day.mintemp_c)}&deg;
+                    {Math.floor(units.temperature === 'C'?item.day.mintemp_c:item.day.mintemp_f,)}&deg;
                   </p>
                   <TemperatureRange
                     min={minTemperature}
                     max={maxTemperature}
-                    value={[item.day.mintemp_c, item.day.maxtemp_c]}
+                    value={[units.temperature === 'C'?item.day.mintemp_c:item.day.mintemp_f, units.temperature === 'C'?item.day.maxtemp_c:item.day.maxtemp_f,]}
                   />
                   <p className="flex w-[3rem] min-w-fit justify-end">
-                    {Math.floor(item.day.maxtemp_c)}&deg;
+                    {Math.floor(units.temperature === 'C'?item.day.maxtemp_c:item.day.maxtemp_f)}&deg;
                   </p>
                 </div>
               </div>

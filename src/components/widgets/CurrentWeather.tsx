@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { City, HourlyForecastData } from "@/lib/types";
 import Clock from "../ui/clock";
 import IconComponent from "../ui/icon-component";
+import { useAppSelector } from "@/redux/store";
 
 // Helper function to find the current hour's data
 const findCurrentHourData = (data: HourlyForecastData[]): HourlyForecastData | null => {
@@ -21,7 +22,7 @@ interface CurrentWeatherProps {
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, city }) => {
   const currentHourData = findCurrentHourData(data);
   const now = new Date();
-
+  const units = useAppSelector(state=>state.UnitReducer.value)
   if (!currentHourData) {
     return <Card className="relative flex h-fit w-full shrink-0 flex-col justify-between overflow-hidden md:h-[25rem]">No data available</Card>;
   }
@@ -63,7 +64,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, city }) => {
         </div>
       </div>
       <div className="flex justify-center py-7 text-8xl font-bold md:py-10">
-        {Math.round(currentHourData.temp_c)}&deg;
+        {units.temperature === 'C'? Math.round(currentHourData.temp_c): Math.round(currentHourData.temp_f)}&deg;
       </div>
       <div>
         <IconComponent
@@ -73,8 +74,8 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, city }) => {
         />
         <div className="font-semibold">{currentHourData.condition.text}</div>
         <div className="flex gap-2 dark:text-neutral-500">
-          <span>H: {Math.round(currentHourData.temp_c)}&deg;</span>
-          <span>L: {Math.round(currentHourData.temp_c)}&deg;</span>
+          <span>H: {units.temperature === 'C'? Math.round(currentHourData.temp_c): Math.round(currentHourData.temp_f)}&deg;</span>
+          <span>L: {units.temperature === 'C'? Math.round(currentHourData.temp_c): Math.round(currentHourData.temp_f)}&deg;</span>
         </div>
       </div>
     </Card>

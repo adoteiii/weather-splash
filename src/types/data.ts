@@ -164,3 +164,9 @@ export type WeatherData = {
     instruction: string;
   }[];
 };
+
+export type UnitData = {
+  temperature: 'C'|'F'
+  pressure: 'inHg'|'hPa'
+  visibilityUnit: 'mi'|'km'
+}

@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/redux/store";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Compass from "../ui/compass";
 import { HourlyForecastData } from "@/lib/types";
@@ -7,6 +8,7 @@ interface WindWidgetProps {
 }
 
 export default function WindWidget({ data }: WindWidgetProps) {
+  const units = useAppSelector((state)=>state.UnitReducer.value)
   return (
     <Card className="order-4 h-48 xl:order-3">
       <CardHeader>
@@ -46,7 +48,7 @@ export default function WindWidget({ data }: WindWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent className="flex justify-center p-0">
-        <Compass speed={data[0].wind_kph} deg={data[0].wind_degree} />
+        <Compass speed={units.visibilityUnit === 'km'?data[0].wind_kph:data[0].wind_mph} deg={data[0].wind_degree} />
       </CardContent>
     </Card>
   );

@@ -93,7 +93,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           />
         </div>
         {showSuggestions && searchResults && (
-          <div className="absolute overflow-scroll z-50 min-h-[150px] max-h-[200px] min-w-[200px] mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
+          <div className="absolute overflow-scroll z-50 min-h-[150px] max-h-[200px] sm:w-[400px] w-full rounded-2xl mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
             {searchResults.map((res) => (
               <div
                 onMouseDown={(e) => {

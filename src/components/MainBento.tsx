@@ -10,6 +10,7 @@ import React from 'react';
 
 const MainBento: React.FC = () => {
   const data = useAppSelector(state=>state.DataReducer.value)
+  const units = useAppSelector(state=>state.UnitReducer.value)
   const getGradientColor = (description: string) => {
     switch (description) {
       case 'Sunny':
@@ -48,7 +49,7 @@ const MainBento: React.FC = () => {
         </div>
         <div className="text-white text-5xl font-normal flex flex-col items-center">
           <span className="text-xs font-bold">{data?.location?.name?.toUpperCase()}</span>
-          <span>{Math.round(data?.current?.temp_c)}°</span>
+          <span>{Math.round(units.temperature==='C'?data?.current?.temp_c: data?.current?.temp_f)}°</span>
         </div>
         <div className="text-white text-base font-normal text-center">
           {data?.forecast?.forecastday?.[0].day?.condition?.text}

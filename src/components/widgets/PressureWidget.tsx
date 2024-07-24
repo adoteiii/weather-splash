@@ -1,3 +1,4 @@
+import { useAppSelector } from "@/redux/store";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { HourlyForecastData } from "@/lib/types";
 
@@ -7,7 +8,7 @@ interface PressureWidgetProps {
 
 export default function PressureWidget({ data }: PressureWidgetProps) {
   console.log("PressureWidget data:", data);
-
+  const units = useAppSelector(state=>state.UnitReducer.value)
   if (!data || data.length === 0) {
     console.log("No data available for PressureWidget");
     return (
@@ -90,7 +91,7 @@ export default function PressureWidget({ data }: PressureWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-      <p>{(pressure_mb * 0.0295301).toFixed(2)} inHg</p>
+      {units?.pressure === 'inHg'?<p>{(pressure_mb * 0.0295301).toFixed(2)} inHg</p>:<p>{(pressure_mb).toFixed(0)} hPa</p>}
 
       </CardContent>
       <CardFooter>
