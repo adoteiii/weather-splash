@@ -35,3 +35,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Firebase Functions directories
+.firebase/weather-splash/functions/.next/
+/.firebase/weather-splash/functions/node_modules
+/.firebase/weather-splash/functions
+/.firebase/weather-splash/hosting

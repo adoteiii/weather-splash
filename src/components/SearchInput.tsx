@@ -6,6 +6,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTheme } from 'next-themes';
 import { Input } from './ui/input';
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 
 interface SearchInputProps {}
 
@@ -93,31 +95,33 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           />
         </div>
         {showSuggestions && searchResults && (
-          <div className="absolute overflow-scroll z-50 min-h-[150px] max-h-[200px] min-w-[200px] mt-10 bg-black/90 border-b-2 px-2 py-2 border-gray-800 suggestion-box">
-            {searchResults.map((res) => (
-              <div
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  selectItem(res.name);
-                }}
-                className="px-3 gap-2 flex flex-col border-b-[0.1px] border-b-white/10 border-t-[0.1px] border-t-white/10 py-2 hover:bg-white/10 hover:cursor-pointer"
-                key={res.id}
-              >
-                <h1>{res.name}</h1>
-                <div className="flex gap-2 items-center">
-                  <FiMapPin />
-                  <p>{res.region}, {res.country}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+  <div className="absolute z-50 top-full w-48  mt-1 bg-gray-900 rounded-md shadow-lg overflow-hidden">
+    {searchResults.map((res) => (
+      <div
+        key={res.id}
+        onMouseDown={(e) => {
+          e.preventDefault();
+          selectItem(res.name);
+        }}
+        className="px-3 py-2 hover:bg-gray-800 cursor-pointer transition-colors duration-150 ease-in-out"
+      >
+        <h3 className="text-sm font-medium text-white">
+          {res.name}
+        </h3>
+        <div className="flex items-center mt-0.5 text-xs text-gray-400">
+          <FiMapPin className="mr-1" size={10} />
+          <span>{res.region}, {res.country}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
       </div>
 
-      <div className="flex justify-center flex-1 sm:mt-0 h-8 items-center px-2 text-white">
-        <img className="w-4 h-4" alt="location" src="/assets/layer-1.svg" />
+      <div className="flex justify-center flex-1 sm:mt-0 h-8 items-center px-2 text-gray-800 dark:text-gray-200">
+        <img className="w-6 h-6 dark:invert" alt="location" src="/assets/locationcircle.svg" />
         {data?.location?.name && (
-          <span className="ml-2 text-xs">{data.location.name}</span>
+          <span className="ml-2 text-sm">{data.location.name}</span>
         )}
       </div>
     </div>
