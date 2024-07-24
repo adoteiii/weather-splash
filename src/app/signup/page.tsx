@@ -74,7 +74,7 @@ const SignUp: React.FC = () => {
   return (
     <div>
       <Navbar2 />
-      <BackgroundVideo />
+      {/* <BackgroundVideo /> */}
 
       <div className="flex items-center justify-center min-h-screen bg-cover bg-center backdrop:blur-md">
         <Card className="mx-auto max-w-sm">
