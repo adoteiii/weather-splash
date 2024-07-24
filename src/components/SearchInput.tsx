@@ -4,8 +4,10 @@ import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTheme } from 'next-themes';
+import { Input } from './ui/input';
 
-interface InputProps {}
+interface SearchInputProps {}
 
 type SearchResult = {
   country: string;
@@ -17,13 +19,14 @@ type SearchResult = {
   url: string;
 }[];
 
-const Input: React.FC<InputProps> = () => {
+const SearchInput: React.FC<SearchInputProps> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const data = useAppSelector((state) => state.DataReducer.value);
   const location = useAppSelector((state) => state.LocationReducer.value);
   const [search, setSearch] = useState(location);
   const [searchResults, setSearchResults] = useState<SearchResult | null | undefined>();
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const { theme } = useTheme();
 
   const selectItem = (item: string) => {
     setSearchResults(null);
@@ -71,13 +74,13 @@ const Input: React.FC<InputProps> = () => {
   return (
     <div className="flex w-full justify-between items-center flex-1 sm:w-auto gap-4 sm:mt-0 flex-wrap sm:flex-nowrap">
       <div className="flex flex-col">
-        <div className="relative flex justify-between bg-[#2e2e2e] rounded-3xl h-8 items-center px-4 py-2">
-          <img
+        <div className="relative flex justify-between">
+          {/* <img
             className="w-4 h-4"
             alt="Magnifyingglass"
             src="/assets/magnifyingglass-1.svg"
-          />
-          <input
+          /> */}
+          <Input
             type="text"
             placeholder="Search City..."
             onFocus={() => setShowSuggestions(true)} // Show suggestions on focus
@@ -86,7 +89,7 @@ const Input: React.FC<InputProps> = () => {
             onChange={(e) => {
               setShowSuggestions(true)
               setSearch(e.currentTarget.value)}}
-            className="ml-2 bg-transparent border-none text-white text-xs focus:outline-none flex-1"
+           
           />
         </div>
         {showSuggestions && searchResults && (
@@ -121,4 +124,4 @@ const Input: React.FC<InputProps> = () => {
   );
 };
 
-export default Input;
+export default SearchInput;
