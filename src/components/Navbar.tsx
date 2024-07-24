@@ -31,7 +31,7 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   const data = useAppSelector((state) => state.DataReducer.value);
-  const [profileDialogOpen, setProfileDialogOpen] = useState(true);
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
   const [userLocation, setUserLocation] = useState('')
   const handleSearch = () => {
@@ -76,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
             </div>
             <div className="mt-10 px-20 flex gap-2 flex-col">
               <p className="text-md font-bold">User Location</p>
-              <div className="flex gap-3 items-center"><Edit className="text-gray-400"></Edit><input className="bg-gray-200 px-3 py-2" type="text" value={userLocation} onChange={(e)=>setUserLocation(e.currentTarget.value)}/></div>
+              <div className="flex gap-3 items-center"><Edit className="text-gray-400"></Edit><input className="bg-gray-200 dark:bg-gray-700 px-3 py-2" type="text" value={userLocation} onChange={(e)=>setUserLocation(e.currentTarget.value)}/></div>
             </div>
             <div className="my-8 px-20 flex gap-2 flex-col">
               <p className="text-md font-bold">User Preferences</p>
@@ -189,7 +189,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
                       <DropdownMenuItem
                         className="group-hover:cursor-pointer"
                         onClick={() => {
-                          setProfileDialogOpen;
+                          setProfileDialogOpen(true);
                         }}
                         style={{ padding: "4px" }}
                       >
