@@ -1,12 +1,13 @@
 "use client";
 
-import { fetchAndReturn, fetchAndReturnOrderedLimit } from "@/lib/firebase/fetchData";
+import { fetchAndReturn, fetchAndReturnOrderedLimit, fetchDoc } from "@/lib/firebase/fetchData";
 import { writeToDoc } from "@/lib/firebase/firestore";
 import { AuthorizationContext } from "@/lib/userContext";
 import { setData } from "@/redux/features/dataSlice";
 import { setSearchHistory } from "@/redux/features/searchHistorySlice";
+import { setUnits } from "@/redux/features/unitSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { WeatherData } from "@/types/data";
+import { UnitData, WeatherData } from "@/types/data";
 import { useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -52,6 +53,10 @@ export const LayoutManager = () => {
     if (!user?.uid){
       return
     }
+    // get preferences
+    fetchDoc('preferences', user?.uid).then((data: UnitData)=>{
+      dispatch(setUnits(data))
+    })
     // get location history
     fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5).then((data)=>{
       dispatch(setSearchHistory(data))
