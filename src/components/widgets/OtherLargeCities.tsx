@@ -38,9 +38,9 @@ export default function OtherLargeCities() {
                 },
               };
             })
-            .map((item) => (
+            .map((item, index) => (
               <button
-                key={item.city}
+                key={index}
                 onClick={() => {
                   handleClick(item);
                 }}

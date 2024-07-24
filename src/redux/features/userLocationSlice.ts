@@ -4,17 +4,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState = {
     value: '' as string,
 }
-export const Location = createSlice(
+export const UserLocation = createSlice(
     {
-        name: 'Location',
+        name: 'UserLocation',
         initialState,
         reducers: {
-            setLocation: (state, action: PayloadAction<string>)=> {
+            setUserLocation: (state, action: PayloadAction<string>)=> {
                 return {
                     value: action.payload
                 }
             },
-            getLocation: (state)=>{
+            getUserLocation: (state)=>{
                 return {
                     value: state.value
                 }
@@ -23,6 +23,6 @@ export const Location = createSlice(
     }
 )
 
-export const {setLocation, getLocation} = Location.actions
-export default Location.reducer 
+export const {setUserLocation, getUserLocation} = UserLocation.actions
+export default UserLocation.reducer 
 

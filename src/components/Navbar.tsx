@@ -95,9 +95,9 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
                         <Button>
                           <Link href="/login" className="">
                             <div className="space-y-2">
-                              <h4 className="font-medium leading-none">
+                              <span className="font-medium leading-none">
                                 Login
-                              </h4>
+                              </span>
                             </div>
                           </Link>
                         </Button>
@@ -105,9 +105,9 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
                         <Button>
                           <Link href="/signup" className="">
                             <div className="space-y-2">
-                              <h4 className="font-medium leading-none">
+                              <span className="font-medium leading-none">
                                 Sign up
-                              </h4>
+                              </span>
                             </div>
                           </Link>
                         </Button>
@@ -142,14 +142,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
                       >
                         Profile
                       </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => {
-                          setBillingDialogOpen(true);
-                        }}
-                        style={{ padding: "4px" }}
-                      >
-                        Billing
-                      </DropdownMenuItem>
+                      
                       <DropdownMenuItem
                         onClick={() => signOut()}
                         style={{ padding: "4px" }}

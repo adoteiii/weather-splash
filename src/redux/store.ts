@@ -4,7 +4,7 @@ import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import LocationReducer from './features/locationSlice'
 import UnitReducer from './features/unitSlice'
 import SearchHistoryReducer from './features/searchHistorySlice'
-
+import UserLocationReducer from './features/userLocationSlice'
 
 export const store = configureStore(
     {reducer:
@@ -12,7 +12,8 @@ export const store = configureStore(
            DataReducer,
            LocationReducer,
            UnitReducer,
-           SearchHistoryReducer
+           SearchHistoryReducer,
+           UserLocationReducer
         }
     }
 )

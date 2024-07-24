@@ -4,6 +4,7 @@ import { fetchAndReturn, fetchAndReturnOrderedLimit, fetchDoc } from "@/lib/fire
 import { writeToDoc } from "@/lib/firebase/firestore";
 import { AuthorizationContext } from "@/lib/userContext";
 import { setData } from "@/redux/features/dataSlice";
+import { setLocation } from "@/redux/features/locationSlice";
 import { setSearchHistory } from "@/redux/features/searchHistorySlice";
 import { setUnits } from "@/redux/features/unitSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
@@ -41,8 +42,18 @@ export const LayoutManager = () => {
         if (!user?.uid){
           return
         }
-        writeToDoc('searchHistory', v4(), {uid: user.uid, location: data_.location, timestamp: Date.now()})
-        dispatch(setSearchHistory([{uid: user.uid, location: data_.location, timestamp: Date.now()}, ...searchHistory]))
+        if (searchHistory.map((item)=>item.location.name).indexOf(data_.location.name)!==-1){
+          return
+        }
+        const uuid = v4()
+        writeToDoc('searchHistory', uuid, {uid: user.uid, location: data_.location, timestamp: Date.now()}).then(()=>{
+          fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5, 'asc').then((data)=>{
+            dispatch(setSearchHistory(data.reverse()))
+            console.log(data)
+          })
+        })
+        
+        
       })
       .catch(() => {
         toast.error("Cannot find city");
@@ -50,18 +61,33 @@ export const LayoutManager = () => {
   }, [dispatch, location]);
 
   useEffect(()=>{
-    if (!user?.uid){
+    if (loading){
       return
     }
+    if (!user?.uid){
+      
+        dispatch(setLocation('Accra'));
+        dispatch(setSearchHistory([]))
+        dispatch(setUnits({temperature: 'C', pressure: 'inHg', visibilityUnit: 'km'}))
+      
+      return
+    }
+    
     // get preferences
     fetchDoc('preferences', user?.uid).then((data: UnitData)=>{
       dispatch(setUnits(data))
     })
     // get location history
-    fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5).then((data)=>{
-      dispatch(setSearchHistory(data))
+    fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5, 'asc').then((data)=>{
+      dispatch(setSearchHistory(data.reverse()))
+      
       console.log(data)
     })
-  }, [user])
+    fetchDoc('location', user?.uid).then((data)=>{
+      dispatch(setLocation(data.city))
+    }).catch(()=>{
+      dispatch(setLocation('Accra'));
+    })
+  }, [user, loading])
   return <></>;
 };

@@ -1,13 +1,13 @@
 "use client";
-import { FiMapPin } from 'react-icons/fi';
+import { FiMapPin } from "react-icons/fi";
 import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useTheme } from 'next-themes';
-import { Input } from './ui/input';
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
+import { useTheme } from "next-themes";
+import { Input } from "./ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 
 interface SearchInputProps {}
 
@@ -26,7 +26,9 @@ const SearchInput: React.FC<SearchInputProps> = () => {
   const data = useAppSelector((state) => state.DataReducer.value);
   const location = useAppSelector((state) => state.LocationReducer.value);
   const [search, setSearch] = useState(location);
-  const [searchResults, setSearchResults] = useState<SearchResult | null | undefined>();
+  const [searchResults, setSearchResults] = useState<
+    SearchResult | null | undefined
+  >();
   const [showSuggestions, setShowSuggestions] = useState(false);
   const { theme } = useTheme();
 
@@ -37,12 +39,12 @@ const SearchInput: React.FC<SearchInputProps> = () => {
     // setShowSuggestions(false); // Hide suggestions on selection
   };
 
-  useEffect(()=>{
-    if (search!==location){
-      setSearch(location)
-      setShowSuggestions(false)
+  useEffect(() => {
+    if (search !== location) {
+      setSearch(location);
+      setShowSuggestions(false);
     }
-  }, [location])
+  }, [location]);
 
   const querySearch = () => {
     fetch(
@@ -58,7 +60,6 @@ const SearchInput: React.FC<SearchInputProps> = () => {
   };
 
   useEffect(() => {
-    
     if (!search || search.length < 3) {
       return;
     }
@@ -89,37 +90,41 @@ const SearchInput: React.FC<SearchInputProps> = () => {
             onBlur={() => setShowSuggestions(false)} // Hide suggestions on blur
             value={search}
             onChange={(e) => {
-              setShowSuggestions(true)
-              setSearch(e.currentTarget.value)}}
-           
+              setShowSuggestions(true);
+              setSearch(e.currentTarget.value);
+            }}
           />
         </div>
         {showSuggestions && searchResults && (
-  <div className="absolute z-50 top-full w-48  mt-1 bg-gray-900 rounded-md shadow-lg overflow-hidden">
-    {searchResults.map((res) => (
-      <div
-        key={res.id}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          selectItem(res.name);
-        }}
-        className="px-3 py-2 hover:bg-gray-800 cursor-pointer transition-colors duration-150 ease-in-out"
-      >
-        <h3 className="text-sm font-medium text-white">
-          {res.name}
-        </h3>
-        <div className="flex items-center mt-0.5 text-xs text-gray-400">
-          <FiMapPin className="mr-1" size={10} />
-          <span>{res.region}, {res.country}</span>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
+          <div className="absolute z-50 top-full w-48  mt-1 bg-gray-900 rounded-md shadow-lg overflow-hidden">
+            {searchResults.map((res) => (
+              <div
+                key={res.id}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  selectItem(res.name);
+                }}
+                className="px-3 py-2 hover:bg-gray-800 cursor-pointer transition-colors duration-150 ease-in-out"
+              >
+                <h3 className="text-sm font-medium text-white">{res.name}</h3>
+                <div className="flex items-center mt-0.5 text-xs text-gray-400">
+                  <FiMapPin className="mr-1" size={10} />
+                  <span>
+                    {res.region}, {res.country}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className="flex justify-center flex-1 sm:mt-0 h-8 items-center px-2 text-gray-800 dark:text-gray-200">
-        <img className="w-6 h-6 dark:invert" alt="location" src="/assets/locationcircle.svg" />
+        <img
+          className="w-6 h-6 dark:invert"
+          alt="location"
+          src="/assets/locationcircle.svg"
+        />
         {data?.location?.name && (
           <span className="ml-2 text-sm">{data.location.name}</span>
         )}
