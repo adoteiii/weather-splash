@@ -133,7 +133,9 @@ const SignUp: React.FC = () => {
                 Create an account
               </Button>
             </form>
-            <Button variant="outline" className="w-full mt-4" onClick={handleGoogleSignUp}>
+            <Button variant="outline" className="w-full mt-4" onClick={(e)=>{
+              e.preventDefault()
+              handleGoogleSignUp()}}>
               <Image
                 height={24}
                 width={24}

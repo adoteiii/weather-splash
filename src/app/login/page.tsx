@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,10 @@ import {
 } from "@/components/ui/card";
 import Navbar2 from "@/components/Navbar2";
 import BackgroundVideo from "@/components/BackgroundVideo";
-import { signInWithEmailAndPassword, signInWithGoogle } from "@/lib/firebase/auth";
+import {
+  signInWithEmailAndPassword,
+  signInWithGoogle,
+} from "@/lib/firebase/auth";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -27,7 +30,7 @@ const Login: React.FC = () => {
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      await signInWithEmailAndPassword({email, password});
+      await signInWithEmailAndPassword({ email, password });
       router.push("/"); // Redirect to home page upon successful login
     } catch (error) {
       if (error instanceof Error) {
@@ -41,11 +44,11 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    const v = await signInWithGoogle()
-    if (v===true){
+    const v = await signInWithGoogle();
+    if (v === true) {
       router.push("/");
     } else {
-      alert(v?.error)
+      alert(v?.error);
     }
   };
 
@@ -78,7 +81,10 @@ const Login: React.FC = () => {
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link href="#" className="ml-auto inline-block text-sm underline">
+                  <Link
+                    href="#"
+                    className="ml-auto inline-block text-sm underline"
+                  >
                     Forgot your password?
                   </Link>
                 </div>
@@ -93,7 +99,14 @@ const Login: React.FC = () => {
               <Button type="submit" className="w-full">
                 Login
               </Button>
-              <Button variant="outline" className="w-full mt-4" onClick={handleGoogleLogin}>
+              <Button
+                variant="outline"
+                className="w-full mt-4"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleGoogleLogin();
+                }}
+              >
                 <Image
                   height={24}
                   width={24}

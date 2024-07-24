@@ -21,6 +21,9 @@ export const LayoutManager = () => {
   const location = useAppSelector((state) => state.LocationReducer.value);
   const {user, loading} = useContext(AuthorizationContext)
   const fetchData = async () => {
+    if (!location){
+      throw 'No location'
+    }
     let url: string = `http://api.weatherapi.com/v1/forecast.json?key=${
       process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY
     }&q=${
@@ -45,6 +48,7 @@ export const LayoutManager = () => {
         if (searchHistory.map((item)=>item.location.name).indexOf(data_.location.name)!==-1){
           return
         }
+        
         const uuid = v4()
         writeToDoc('searchHistory', uuid, {uid: user.uid, location: data_.location, timestamp: Date.now()}).then(()=>{
           fetchAndReturnOrderedLimit('searchHistory', 'uid', '==', user.uid, 'timestamp', 5, 'asc').then((data)=>{
