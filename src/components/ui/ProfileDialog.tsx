@@ -131,42 +131,44 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
           <DialogTitle>Profile</DialogTitle>
           <DialogDescription>Manage your profile settings</DialogDescription>
         </DialogHeader>
-        <div className="relative flex w-full items-center justify-center">
-          <Image
-            alt="profile image full"
-            width={800}
-            height={800}
-            className="w-24 h-24 rounded-full object-cover"
-            src={user?.photoURL || "/assets/person-fill-1.svg"}
-          />
-          <div className="absolute inset-0 flex items-center justify-center bg-[#010101] bg-opacity-50 rounded-full">
-            <Camera className="text-white" size={48} />
-            <input
-              type="file"
-              onChange={(e) => {
-                if (e.currentTarget.files?.[0] && user?.uid) {
-                  uploadImage(
-                    "profile/" + user.uid,
-                    e.currentTarget.files?.[0],
-                    (progress) => {
-                      console.log(progress, "progress");
-                      toast(`Uploading ${progress * 100}%`, {
-                        id: "upload-toaster",
-                      });
-                    },
-                    (error) => {},
-                    (fp, url) => updateProfile(user, undefined, url)
-                  );
-                }
-              }}
-              className="absolute h-24 w-24 opacity-0 bg-transparent text-transparent"
-            />
-          </div>
-        </div>
+        <div className="flex items-center justify-center w-full h-full">
+  <div className="relative w-24 h-24">
+    <Image
+      alt="profile image full"
+      width={800}
+      height={800}
+      className="w-24 h-24 rounded-full object-cover"
+      src={user?.photoURL || "/assets/person-fill-1.svg"}
+    />
+    <div className="absolute inset-0 flex items-center justify-center bg-[#010101] bg-opacity-40 rounded-full">
+      <Camera className="text-white" size={48} />
+      <input
+        type="file"
+        onChange={(e) => {
+          if (e.currentTarget.files?.[0] && user?.uid) {
+            uploadImage(
+              "profile/" + user.uid,
+              e.currentTarget.files?.[0],
+              (progress) => {
+                console.log(progress, "progress");
+                toast(`Uploading ${progress * 100}%`, {
+                  id: "upload-toaster",
+                });
+              },
+              (error) => {},
+              (fp, url) => updateProfile(user, undefined, url)
+            );
+          }
+        }}
+        className="absolute inset-0 opacity-0 cursor-pointer"
+      />
+    </div>
+  </div>
+</div>
         <div className="relative mt-10 px-20 flex gap-2 flex-col">
           <p className="text-md font-semibold">User Location</p>
           <div className="flex gap-3 items-center">
-            <Edit className="text-white" />
+            <Edit className="text-current" />
             <Input
               placeholder="Enter Location"
               type="text"

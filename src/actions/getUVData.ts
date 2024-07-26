@@ -8,7 +8,7 @@ export async function uvIndex({ lat, lon }: { lat: number; lon: number }): Promi
     throw new Error("WeatherAPI key not found in environment variables");
   }
 
-  const response = await fetch(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=yes`);
+  const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${lat},${lon}&aqi=yes`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch data from WeatherAPI");

@@ -1,9 +1,7 @@
 "use client";
 
-import { OTHER_LARGE_CITIES } from "@/lib/config";
 import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import Link from "next/link";
 import { useDispatch } from "react-redux";
 
 export default function OtherLargeCities() {

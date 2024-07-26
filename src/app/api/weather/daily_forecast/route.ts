@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   }
 
   const res = await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${appid}&q=${lat},${lon}&days=${NUMBER_OF_DAYS}`,
+    `https://api.weatherapi.com/v1/forecast.json?key=${appid}&q=${lat},${lon}&days=${NUMBER_OF_DAYS}`,
     {
       next: { revalidate: 900 },
     }

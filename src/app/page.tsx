@@ -9,7 +9,7 @@ import AlertsModal from "@/components/old/AlertsModal";
 
 
 const Home: React.FC = () => {
-  const [alerts, setAlerts] = useState<any[]>([]); // State to store alerts
+  const [alerts] = useState<any[]>([]); // State to store alerts
   const [showAlertsModal, setShowAlertsModal] = useState(false); // State to control modal visibility
 
 

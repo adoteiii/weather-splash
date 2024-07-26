@@ -2,7 +2,7 @@ import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 const BackgroundVideo = () => {
-  const { theme, resolvedTheme } = useTheme();
+  const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -12,20 +12,23 @@ const BackgroundVideo = () => {
   return (
     <div className="absolute inset-0 z-[-1]">
       {resolvedTheme === 'dark' ? (
-        <img
-          className="w-full h-full object-cover opacity-20"
-          src="https://images.pexels.com/photos/6395415/pexels-photo-6395415.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"          
-         
-          
-          
-          
-          
+        <video
+          className="w-full h-full object-cover"
+          src="https://artlist.io/stock-footage/clip/space-aurora-northern-lights-stars/746775"          
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
         />
       ) : (
-        <img
+        <video
           className="w-full h-full object-cover"
-          src="https://images.pexels.com/photos/325185/pexels-photo-325185.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"          
-          
+          src="https://videos.pexels.com/video-files/15204931/15204931-hd_1920_1080_24fps.mp4"          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
         />
       )}
     </div>

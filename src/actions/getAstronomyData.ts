@@ -9,7 +9,7 @@ export const getAstronomyData = async ({ lat, lon }: { lat: number; lon: number 
   }
 
   const response = await fetch(
-    `http://api.weatherapi.com/v1/astronomy.json?key=${apiKey}&q=${lat},${lon}`
+    `https://api.weatherapi.com/v1/astronomy.json?key=${apiKey}&q=${lat},${lon}`
   );
 
   if (!response.ok) {

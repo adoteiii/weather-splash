@@ -6,8 +6,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTheme } from "next-themes";
 import { Input } from "./ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 
 interface SearchInputProps {}
 
@@ -96,7 +94,7 @@ const SearchInput: React.FC<SearchInputProps> = () => {
           />
         </div>
         {showSuggestions && searchResults && (
-          <div className="absolute z-50 top-full w-48  mt-1 bg-gray-900 rounded-md shadow-lg overflow-hidden">
+          <div className="absolute z-50 top-24 w-48  mt-1 bg-gray-900 rounded-md shadow-lg overflow-hidden">
             {searchResults.map((res) => (
               <div
                 key={res.id}

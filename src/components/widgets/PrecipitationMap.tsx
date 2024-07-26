@@ -95,7 +95,7 @@ const WeatherMap: React.FC<WeatherMapProps> = ({ lat, lon }) => {
           return `https://tile.openweathermap.org/map/${layer}/${zoom}/${coord.x}/${coord.y}.png?appid=${OPENWEATHERMAP_TOKEN}`;
         },
         tileSize: new google.maps.Size(256, 256),
-        opacity: 0.6,
+        opacity: 1,
       });
 
       map.overlayMapTypes.clear();

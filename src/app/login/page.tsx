@@ -26,32 +26,54 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useRouter(); // Use router for navigation
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
+    setErrorMessage(""); 
     try {
-      await signInWithEmailAndPassword({ email, password });
-      router.push("/"); // Redirect to home page upon successful login
+      const result = await signInWithEmailAndPassword({ email, password });
+      if ('user' in result) {
+        // This is a UserCredential object, login was successful
+        router.push("/"); 
+      } else {
+        // This is an error object
+        setErrorMessage(result.error || "Login failed. Please try again.");
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error logging in with email and password", error);
-        alert(error.message);
+        // Handle specific error cases
+        if (error.message.includes("user-not-found")) {
+          setErrorMessage("No account found with this email. Please sign up.");
+        } else if (error.message.includes("wrong-password")) {
+          setErrorMessage("Incorrect password. Please try again.");
+        } else if (error.message.includes("invalid-email")) {
+          setErrorMessage("Invalid email format. Please check your email.");
+        } else {
+          setErrorMessage("Login failed. Please try again.");
+        }
       } else {
         console.error("Unknown error", error);
-        alert("An unknown error occurred");
+        setErrorMessage("An unknown error occurred. Please try again later.");
       }
     }
   };
 
   const handleGoogleLogin = async () => {
-    const v = await signInWithGoogle();
-    if (v === true) {
-      router.push("/");
-    } else {
-      alert(v?.error);
+    setErrorMessage(""); 
+    try {
+      const result = await signInWithGoogle();
+      if (result === true) {
+        router.push("/");
+      } else {
+        setErrorMessage(result?.error || "Google login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during Google login", error);
+      setErrorMessage("An error occurred during Google login. Please try again.");
     }
   };
-
   return (
     <div>
       <Navbar2 />
@@ -66,6 +88,9 @@ const Login: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+          {errorMessage && (
+            <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
+          )}
             <form onSubmit={handleLogin} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>

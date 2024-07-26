@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchAndReturn, fetchAndReturnOrderedLimit, fetchDoc } from "@/lib/firebase/fetchData";
+import {  fetchAndReturnOrderedLimit, fetchDoc } from "@/lib/firebase/fetchData";
 import { writeToDoc } from "@/lib/firebase/firestore";
 import { AuthorizationContext } from "@/lib/userContext";
 import { setData } from "@/redux/features/dataSlice";
@@ -24,7 +24,7 @@ export const LayoutManager = () => {
     if (!location){
       throw 'No location'
     }
-    let url: string = `http://api.weatherapi.com/v1/forecast.json?key=${
+    let url: string = `https://api.weatherapi.com/v1/forecast.json?key=${
       process.env.NEXT_PUBLIC_WEATHER_SPLASH_API_KEY
     }&q=${
       location

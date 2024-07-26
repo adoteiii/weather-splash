@@ -7,7 +7,7 @@ export async function getTenDayForecast({ lat, lon }: { lat: number; lon: number
     throw new Error("WeatherAPI key not found in environment variables");
   }
 
-  const response = await fetch(`http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&days=10`);
+  const response = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&days=10`);
 
   if (!response.ok) {
     throw new Error("Failed to fetch data from WeatherAPI");

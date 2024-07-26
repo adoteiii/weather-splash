@@ -3,7 +3,6 @@ import { Card } from "./ui/card";
 import WeatherMap from "./widgets/PrecipitationMap";
 import TenDayForecast from "./widgets/TenDayForcast";
 import HourlyForecast from "./widgets/HourlyForecast";
-import AirPollution from "./widgets/AirPollution";
 import OtherLargeCities from "@/components/widgets/OtherLargeCities";
 import WeatherWidgets from "./widgets/WeatherWidgets";
 
@@ -11,7 +10,6 @@ import { useAppSelector } from "@/redux/store";
 import { getTenDayForecast } from "@/actions/getTenDayForecast";
 import { getHourlyData } from "@/actions/getHourlyData";
 import { getAirPollutionData } from "@/actions/getAirPollutionData";
-import { DEFAULT_LOCATION } from "@/lib/config";
 import {
   HourlyForecastResponse,
   AirPollutionResponse,
@@ -20,9 +18,7 @@ import {
   WeatherApiCurrentData
 } from "@/lib/types";
 import CurrentWeather from "./widgets/CurrentWeather";
-import { ClassNameValue } from 'tailwind-merge';
-import { AstronomyData } from '../lib/types';
-import { Sun } from "lucide-react";
+
 
 const BentoGrids: React.FC = () => {
   const [tenDayForecast, setTenDayForecast] = useState<TenDayForecastData | null>(null);

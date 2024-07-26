@@ -9,7 +9,7 @@ export const getHourlyData = async ({ lat, lon }: { lat: number; lon: number }):
   }
 
   const response = await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&hours=24`
+    `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${lat},${lon}&hours=24`
   );
 
   if (!response.ok) {

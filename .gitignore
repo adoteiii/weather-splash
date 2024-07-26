@@ -41,3 +41,4 @@ next-env.d.ts
 /.firebase/weather-splash/functions/node_modules
 /.firebase/weather-splash/functions
 /.firebase/weather-splash/hosting
+*.cache

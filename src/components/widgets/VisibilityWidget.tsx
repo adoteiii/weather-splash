@@ -60,7 +60,7 @@ export default function VisibilityWidget({ data }: VisibilityWidgetProps) {
   let visibilityDescription = "";
 
   if (vis_km >= 10) {
-    visibilityDescription = "It's perfectly clear right now.";
+    visibilityDescription = "Perfectly clear view.";
   } else if (vis_km >= 5) {
     visibilityDescription = "Good visibility.";
   } else {
@@ -95,7 +95,7 @@ export default function VisibilityWidget({ data }: VisibilityWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {units.visibilityUnit === 'km'?<p>{vis_km} km</p>:<p>{vis_mi} miles</p>}
+        {units.visibilityUnit === 'km'?<p>{vis_km} km</p>:<p>{vis_mi} mi</p>}
       </CardContent>
       <CardFooter>
         <p>{visibilityDescription}</p>
