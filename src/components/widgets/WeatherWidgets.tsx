@@ -21,7 +21,7 @@ export default function WeatherWidgets({ data, airQuality, city }: WeatherWidget
     <>
       <AirPollution data={airQuality.current.air_quality} className="col-span-2" />
       <SunsetWidget city={city} />
-      <WindWidget data={data} />
+      <WindWidget data={data} timezone={city.timezone} />
       <UVIndexWidget data={data} />
       <PrecipitationWidget data={data} />
       <FeelsLikeWidget data={data} />

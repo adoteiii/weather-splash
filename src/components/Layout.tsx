@@ -72,7 +72,7 @@ export const LayoutManager = () => {
       
         dispatch(setLocation('Accra'));
         dispatch(setSearchHistory([]))
-        dispatch(setUnits({temperature: 'C', pressure: 'inHg', visibilityUnit: 'km'}))
+        dispatch(setUnits({temperature: 'C', pressure: 'inHg', visibilityUnit: 'km', wind: 'kph', precipitation: 'in'}))
       
       return
     }

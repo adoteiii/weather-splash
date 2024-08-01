@@ -109,7 +109,13 @@ export type HourlyForecastResponse = {
       date: string;
       date_epoch: number;
       day: {
-        // day data here
+        mintemp_c: number;
+        maxtemp_c: number;
+        mintemp_f: number;
+        maxtemp_f: number;
+        condition: {
+          code: number;
+        };
       };
       hour: HourlyForecastData[];
     }[];
@@ -246,9 +252,27 @@ export interface TenDayForecastData {
           maxtemp_c: number;
           mintemp_f: number;
           maxtemp_f: number;
+          avgtemp_c: number;
+          avgtemp_f: number;
+          maxwind_mph: number;
+          maxwind_kph: number;
+          totalprecip_mm: number;
+          totalprecip_in: number;
+          avghumidity: number;
+          daily_chance_of_rain: number;
           condition: {
+            text: string;
+            icon: string;
             code: number;
           };
+          uv: number;
+        };
+        astro: {
+          sunrise: string;
+          sunset: string;
+          moonrise: string;
+          moonset: string;
+          moon_phase: string;
         };
       }
     ];

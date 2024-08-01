@@ -6,6 +6,38 @@ interface FeelsLikeWidgetProps {
 }
 
 export default function FeelsLikeWidget({ data }: FeelsLikeWidgetProps) {
+// Get the current hour
+const currentHour = new Date().getHours();
+
+// Find the data for the current hour
+const currentHourData = data.find(hourData => new Date(hourData.time).getHours() === currentHour);
+
+if (!currentHourData) {
+  console.log("No current hour data available for FeelsLike");
+  return (
+    <Card className="order-8 flex h-48 flex-col justify-between">
+      <CardHeader>
+        <CardTitle>
+          <i>
+            {/* SVG Icon */}
+          </i>
+         Feels like
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p>No current hour data available</p>
+      </CardContent>
+      <CardFooter></CardFooter>
+    </Card>
+  );
+}
+const feelsLike = Math.floor(currentHourData.feelslike_c);
+const currentTemp = Math.floor(currentHourData.temp_c)
+  let feelsLikeMessage = "";
+  
+
+
+
   return (
     <Card className="order-7 flex h-48 flex-col justify-between">
       <CardHeader>
@@ -28,13 +60,13 @@ export default function FeelsLikeWidget({ data }: FeelsLikeWidgetProps) {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <p>{Math.floor(data[0].feelslike_c)}&deg;</p>
+        <p>{feelsLike}&deg;</p>
       </CardContent>
       <CardFooter>
         <p>
-          {data[0].feelslike_c < data[0].temp_c
+          {feelsLike < currentTemp
             ? "Feels colder than the actual temperature."
-            : data[0].feelslike_c > data[0].temp_c
+            : feelsLike > currentTemp
             ? "Feels warmer than the actual temperature."
             : "Feels like the actual temperature."}
         </p>
@@ -42,3 +74,5 @@ export default function FeelsLikeWidget({ data }: FeelsLikeWidgetProps) {
     </Card>
   );
 }
+  
+

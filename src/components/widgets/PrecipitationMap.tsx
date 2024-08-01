@@ -3,7 +3,8 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { Card } from '../ui/card';
 import { useTheme } from 'next-themes'
 import { darkThemeStyles, lightThemeStyles } from '@/lib/themeStyles';
-
+import { weatherLayers } from '@/lib/mapTypes';
+import {Legend} from '../ui/Legend'
 
 /// <reference types="@types/google.maps" />
 
@@ -18,13 +19,17 @@ const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 
 
-const weatherLayers = [
-  { label: 'Temperature (°C)', code: 'temp_new' },
-  { label: 'Precipitation Intensity (mm/s)', code: 'precipitation_new' },
-  { label: 'Wind Speed and Direction (m/s)', code: 'wind_new' },
-  { label: 'Cloudiness (%)', code: 'clouds_new' },
-  { label: 'Sea Level Pressure (hPa)', code: 'pressure_new' }
-];
+// const weatherLayers = [
+//   { label: 'Temperature (°C)', code: 'temp_new' },
+//   { label: 'Precipitation Intensity (mm/s)', code: 'precipitation_new' },
+//   { label: 'Wind Speed and Direction (m/s)', code: 'wind_new' },
+//   { label: 'Cloudiness (%)', code: 'clouds_new' },
+//   { label: 'Sea Level Pressure (hPa)', code: 'pressure_new' }
+// ];
+
+
+
+
 
 const loadGoogleMapsScript = (url: string): Promise<void> => {
   return new Promise<void>((resolve, reject) => {
@@ -129,6 +134,7 @@ const WeatherMap: React.FC<WeatherMapProps> = ({ lat, lon }) => {
           </div>
         )}
         <div ref={mapRef} style={{ height: '100%', width: '100%' }} />
+        <Legend layer={layer} />
       </div>
     </Card>
   );

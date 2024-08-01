@@ -110,12 +110,16 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
   const handleUnitChange = (
     temperature: string | undefined,
     pressure: string | undefined,
-    visibility: string | undefined
+    visibility: string | undefined,
+    wind: string | undefined,
+    precipitation: string | undefined
   ) => {
     const unit = {
       temperature: temperature || units.temperature,
       pressure: pressure || units.pressure,
       visibilityUnit: visibility || units.visibilityUnit,
+      wind: wind || units.wind,
+      precipitation: precipitation || units.precipitation,
     };
     dispatch(setUnits(unit as UnitData));
     if (!user?.uid) {
@@ -209,7 +213,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
           <div className="flex items-center gap-6 flex-wrap">
             <Select
               value={units.temperature}
-              onValueChange={(e) => handleUnitChange(e, undefined, undefined)}
+              onValueChange={(e) => handleUnitChange(e, undefined, undefined, undefined, undefined)}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Temperature Unit" />
@@ -221,7 +225,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
             </Select>
             <Select
               value={units.pressure}
-              onValueChange={(e) => handleUnitChange(undefined, e, undefined)}
+              onValueChange={(e) => handleUnitChange(undefined, e, undefined, undefined, undefined)}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Pressure Unit" />
@@ -233,7 +237,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
             </Select>
             <Select
               value={units.visibilityUnit}
-              onValueChange={(e) => handleUnitChange(undefined, undefined, e)}
+              onValueChange={(e) => handleUnitChange(undefined, undefined, e, undefined, undefined)}
             >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Visibility Unit" />
@@ -243,6 +247,34 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({ open, onClose }) => {
                 <SelectItem value="mi">mi</SelectItem>
               </SelectContent>
             </Select>
+            <Select
+              value={units.wind}
+              onValueChange={(e) => handleUnitChange(undefined, undefined, undefined, e, undefined)}
+            >
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Wind Unit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="mph">mph</SelectItem>
+                <SelectItem value="kph">km/h</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <Select
+              value={units.precipitation}
+              onValueChange={(e) => handleUnitChange(undefined, undefined, undefined, undefined, e)}
+            >
+                
+              <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder="Precipitation Unit" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="in">in</SelectItem>
+                <SelectItem value="mm">mm</SelectItem>
+              </SelectContent>
+            </Select>
+
+           
           </div>
         </div>
         <DialogFooter>

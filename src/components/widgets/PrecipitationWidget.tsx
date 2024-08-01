@@ -56,6 +56,9 @@ export default function PrecipitationWidget({ data }: PrecipitationWidgetProps) 
   }
 
   const precip_mm = currentHourData.precip_mm;
+  const precip_in = currentHourData.precip_in;
+
+
   let precipitationDescription = "";
 
   if (precip_mm <= 0.2) {
@@ -145,7 +148,7 @@ export default function PrecipitationWidget({ data }: PrecipitationWidgetProps) 
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <ThreeHourPrecip precip_mm={precip_mm} />
+        <ThreeHourPrecip precip_mm={precip_mm} precip_in={precip_in} />
       </CardContent>
       <CardFooter>
         <p>{precipitationDescription}</p>

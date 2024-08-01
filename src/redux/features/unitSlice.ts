@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
 const initialState = {
-    value: {temperature: 'C', pressure: 'inHg', visibilityUnit: 'km'} as UnitData,
+    value: {temperature: 'C', pressure: 'inHg', visibilityUnit: 'km', wind: 'kph', precipitation: 'mm'} as UnitData,
 }
 export const Units = createSlice(
     {

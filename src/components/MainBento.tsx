@@ -12,29 +12,46 @@ const MainBento: React.FC = () => {
   const data = useAppSelector(state=>state.DataReducer.value)
   const units = useAppSelector(state=>state.UnitReducer.value)
   const getGradientColor = (description: string) => {
-    switch (description) {
-      case 'Sunny':
-      case 'Clear':
-        return 'from-yellow-400 to-orange-500';
-      case 'Partly cloudy':
+    switch (description.toLowerCase()) {
+      case 'sunny':
+      case 'clear':
+        return 'from-yellow-300 to-orange-400';
+      case 'partly cloudy':
+        return 'from-blue-200 to-gray-300';
+      case 'cloudy':
         return 'from-gray-300 to-gray-500';
-      case 'Cloudy':
+      case 'overcast':
         return 'from-gray-400 to-gray-600';
-      case 'Overcast':
-        return 'from-gray-500 to-gray-700';
-      case 'Mist':
-        return 'from-gray-600 to-gray-800';
-      case 'Patchy rain possible':
-      case 'Patchy rain nearby':
-      case 'Light rain':
-      case 'Moderate rain':
-      case 'Heavy rain':
+      case 'mist':
+      case 'fog':
+        return 'from-gray-300 to-gray-500';
+      case 'patchy rain possible':
+      case 'patchy light rain':
+      case 'patchy rain ahead':
+        return 'from-blue-200 to-gray-400';
+      case 'light rain':
+      case 'light drizzle':
+        return 'from-blue-300 to-blue-500';
+      case 'moderate rain':
         return 'from-blue-400 to-blue-600';
-      case 'Patchy snow possible':
-      case 'Light snow':
-      case 'Moderate snow':
-      case 'Heavy snow':
-        return 'from-blue-100 to-blue-300';
+      case 'heavy rain':
+        return 'from-blue-600 to-blue-800';
+      case 'patchy snow possible':
+      case 'light snow':
+        return 'from-blue-100 to-gray-300';
+      case 'moderate snow':
+        return 'from-blue-200 to-gray-400';
+      case 'heavy snow':
+        return 'from-blue-300 to-gray-500';
+      case 'thunderstorm':
+      case 'thundery outbreaks possible':
+        return 'from-purple-500 to-gray-700';
+      case 'blizzard':
+        return 'from-blue-200 to-gray-100';
+      case 'freezing fog':
+        return 'from-blue-100 to-gray-300';
+      case 'patchy freezing drizzle possible':
+        return 'from-blue-200 to-gray-400';
       default:
         return 'from-blue-200 to-blue-400';
     }

@@ -36,6 +36,7 @@ export default async function RootLayout({
                 {children}
               </>
             </ReduxProvider>
+            
           </NextThemesProvider>
         </AuthContext>
       </body>
