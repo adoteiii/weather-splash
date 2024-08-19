@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import MainBento from "@/components/MainBento";
 import BentoGrids from "@/components/BentoGrids";
 import AlertsModal from "@/components/old/AlertsModal";
+import TopBanner from "@/components/TopBanner";
 
 
 
@@ -24,11 +25,18 @@ const Home: React.FC = () => {
             onAlertIconClick={() => setShowAlertsModal(true)}
           />
         </div>
+
+         {/* Summery */}
+         <div className="flex flex-col md:flex-row justify-between items-center p-4">
+          <TopBanner 
+
+          />
+        </div>
   
         {/* MainBento */}
-        <div className="flex justify-center mt-6">
+        {/* <div className="flex justify-center mt-6">
           <MainBento />
-        </div>
+        </div> */}
 
         {/* BentoGrids */}
         <div className="flex justify-center mt-6">

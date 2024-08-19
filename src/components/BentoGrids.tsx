@@ -3,7 +3,7 @@ import { Card } from "./ui/card";
 import WeatherMap from "./widgets/PrecipitationMap";
 import TenDayForecast from "./widgets/TenDayForcast";
 import HourlyForecast from "./widgets/HourlyForecast";
-import OtherLargeCities from "@/components/widgets/OtherLargeCities";
+import SearchHistory from "@/components/widgets/SearchHistory";
 import WeatherWidgets from "./widgets/WeatherWidgets";
 
 import { useAppSelector } from "@/redux/store";
@@ -114,7 +114,7 @@ const BentoGrids: React.FC = () => {
 
             <WeatherMap lat={data.location.lat} lon={data.location.lon} />
 
-          <OtherLargeCities />
+          <SearchHistory />
 
         </section>
       </Card>

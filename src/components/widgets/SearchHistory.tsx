@@ -4,7 +4,7 @@ import { setLocation } from "@/redux/features/locationSlice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 
-export default function OtherLargeCities() {
+export default function SearchHistory() {
   const dispatch = useDispatch<AppDispatch>();
   const searchHistory = useAppSelector(
     (state) => state.SearchHistoryReducer.value
