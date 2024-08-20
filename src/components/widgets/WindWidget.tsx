@@ -5,7 +5,7 @@ import { HourlyForecastData } from "@/lib/types";
 
 interface WindWidgetProps {
   data: HourlyForecastData[];
-  timezone: number;  // Add this prop
+  timezone: string;  // Add this prop
 }
 
 export default function WindWidget({ data, timezone }: WindWidgetProps) {
@@ -13,9 +13,9 @@ export default function WindWidget({ data, timezone }: WindWidgetProps) {
 
   // Get the current time in the specified timezone
   const currentDate = new Date();
-  const localTime = currentDate.getTime();
-  const localOffset = currentDate.getTimezoneOffset() * 60000;
-  const targetTime = new Date(localTime + localOffset + (timezone * 3600000));
+  // const localTime = currentDate.getTime();
+  
+  const targetTime = new Date(currentDate.toLocaleDateString('en-US', {timeZone: timezone}).valueOf());
   const currentHour = targetTime.getHours();
 
   // Find the forecast data for the current hour

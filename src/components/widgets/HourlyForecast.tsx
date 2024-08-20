@@ -5,15 +5,20 @@ import { useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import IconComponent from "../ui/icon-component";
 import { useAppSelector } from "@/redux/store";
+import { getTimezone } from "countries-and-timezones";
 
 interface HourlyForecastProps {
   data: HourlyForecastData[];
 }
 
 export default function HourlyForecast({ data }: HourlyForecastProps) {
+  const datan = useAppSelector(state=>state.DataReducer.value)
   function extractHoursFromDate(dt: number): string {
     const date = new Date(dt * 1000);
-    let hours = date.getHours();
+    console.log('date')
+    console.log('hf-', (getTimezone(datan?.location.tz_id||"Brazil/West")?.utcOffset||0))
+    let hours = date.getHours()+ (getTimezone(datan?.location.tz_id||"Brazil/West")?.utcOffset||0)/60;
+    // let hours = date.getHours();
     const ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12; // Handle midnight (0 hours)

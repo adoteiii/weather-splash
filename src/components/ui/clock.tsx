@@ -4,15 +4,15 @@ import { useEffect, useState } from "react"
 
 interface ClockProps {
   initial: Date
-  timezone: number
+  timezone: string
 }
 
 export default function Clock({ initial, timezone }: ClockProps) {
-  const [time, setTime] = useState(calculateLocalTime(initial, timezone))
+  const [time, setTime] = useState(initial)
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setTime(calculateLocalTime(new Date(), timezone))
+      setTime(new Date())
     }, 1000)
 
     return () => clearInterval(timer)
@@ -27,7 +27,7 @@ export default function Clock({ initial, timezone }: ClockProps) {
   return (
     <div className="tabular-nums">
       {time.toLocaleTimeString("en-US", {
-        timeZone: "UTC",
+        timeZone: timezone,
         hour12: true,
         hour: "numeric",
         minute: "2-digit",

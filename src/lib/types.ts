@@ -197,7 +197,7 @@ export type City = {
   };
   country: string;
   population: number;
-  timezone: number;
+  timezone: string;
   sunrise: string;
   sunset: string;
    astronomy: AstronomyData;

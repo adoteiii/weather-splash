@@ -109,9 +109,9 @@ export default function WeatherNotifications({ location }: { location: Location 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger onClick={() => setIsOpen(true)}>
-        <Button variant="outline" size="icon" className="h-9 shrink-0">
+        <div className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-10 w-10 border border-input bg-background hover:bg-accent/50 hover:text-accent-foreground">
             <Bell width={18} height={18} />
-        </Button> 
+        </div> 
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

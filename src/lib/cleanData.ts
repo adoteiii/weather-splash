@@ -5,6 +5,8 @@ type SimplifiedWeatherData = {
   temperature: number;
   condition: string;
   rainChance: number;
+  timezone: string
+  timeutc: string;
 };
 
 export const cleanData = (
@@ -19,7 +21,9 @@ export const cleanData = (
   // Simplified data extraction
   const simplifiedData: SimplifiedWeatherData = {
     city: chosenCity,
+    timezone: currentData.location.tz_id,
     temperature: current.temp_c,
+    timeutc: new Date().toUTCString(),
     condition: current.condition.text,
     rainChance: current.precip_mm || 0, 
   };

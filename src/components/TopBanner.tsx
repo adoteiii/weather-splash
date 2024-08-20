@@ -69,11 +69,11 @@ const TopBanner: React.FC = () => {
               <div className="space-y-2">
                 <CardDescription>
                   {error ? (
-                    <p className="text-red-100 text-sm">{error}</p>
+                    <span className="text-red-100 text-sm">{error}</span>
                   ) : (
-                    <p className="text-sm">
+                    <span className="text-sm">
                       {weatherSummary || 'Generating weather summary...'}
-                    </p>
+                    </span>
                   )}
                 </CardDescription>
                 <div>

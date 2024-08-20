@@ -7,6 +7,11 @@
  * @param {string} format - The format for the date string.
  * @returns {string} - The formatted date string.
  */
+import dayjs from 'dayjs'
+import utc from "dayjs/plugin/utc"
+import timezone from "dayjs/plugin/timezone"
+dayjs.extend(utc)
+dayjs.extend(timezone)
 export function convertToDate(localtime: string, dateEpoch: number, format: string): string {
   // Convert dateEpoch to a JavaScript Date object
   const date = new Date(dateEpoch * 1000);
@@ -28,7 +33,7 @@ export function convertToDate(localtime: string, dateEpoch: number, format: stri
  */
 
 
-export function formatSunTimeWithAMPM(sunTime: string, timezoneOffset: number): string {
+export function formatSunTimeWithAMPM(sunTime: string, timezoneOffset: string): string {
   // Log the raw sun time
   console.log('Raw Sun Time (string):', sunTime);
 
@@ -42,10 +47,10 @@ export function formatSunTimeWithAMPM(sunTime: string, timezoneOffset: number): 
   sunDate.setSeconds(0);
 
   // Log the initial sun time in UTC
-  console.log('Sun Time UTC Date:', sunDate.toUTCString());
+  console.log('Sun Time UTC Date:', sunDate.toUTCString(), timezoneOffset);
 
   // Calculate the local time using the timezone offset (in minutes)
-  const localTime = new Date(sunDate.getTime() + timezoneOffset * 60000);
+  const localTime = dayjs.utc(sunDate.toUTCString()).tz(timezoneOffset).toDate();
 
   // Log the local time after applying timezone offset
   console.log('Local Time Date:', localTime.toString());

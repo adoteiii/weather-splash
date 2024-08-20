@@ -18,7 +18,13 @@ import {
   WeatherApiCurrentData
 } from "@/lib/types";
 import CurrentWeather from "./widgets/CurrentWeather";
+import {getTimezone} from 'countries-and-timezones';
 
+const getOffset = (timeZone = 'UTC', date = new Date()) => {
+  const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+  const tzDate = new Date(date.toLocaleString('en-US', { timeZone }));
+  return (tzDate.getTime() - utcDate.getTime()) / 6e4;
+}
 
 const BentoGrids: React.FC = () => {
   const [tenDayForecast, setTenDayForecast] = useState<TenDayForecastData | null>(null);
@@ -60,7 +66,7 @@ const BentoGrids: React.FC = () => {
           },
           country: data.location.country,
           population: 0,
-          timezone: new Date().getTimezoneOffset() * -60, // Convert to seconds
+          timezone: data.location.tz_id,// new Date().getTimezoneOffset() * -60, // Convert to seconds
           sunrise: "",
           sunset: "",
           astronomy: {
@@ -68,6 +74,7 @@ const BentoGrids: React.FC = () => {
             sunset: ""
           }
         };
+        console.log(getOffset(data.location.tz_id, new Date())*60, 'offset')
         setCity(cityData);
       } catch (error) {
         console.error("Failed to fetch forecasts:", error);

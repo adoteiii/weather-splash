@@ -44,6 +44,8 @@
     "@tremor/react": "^3.17.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "countries-and-timezones": "^3.6.0",
+    "dayjs": "^1.11.13",
     "firebase": "^10.12.4",
     "firebase-admin": "^12.2.0",
     "lucide-react": "^0.408.0",

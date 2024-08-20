@@ -23,6 +23,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, city }) => {
   const currentHourData = findCurrentHourData(data);
   const now = new Date();
   const units = useAppSelector(state=>state.UnitReducer.value)
+  
   if (!currentHourData) {
     return <Card className="relative flex h-fit w-full shrink-0 flex-col justify-between overflow-hidden md:h-[25rem]">No data available</Card>;
   }
