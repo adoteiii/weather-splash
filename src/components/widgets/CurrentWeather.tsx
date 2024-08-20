@@ -29,7 +29,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ data, city }) => {
   }
 
   // Format date to show only the day
-  const dateOptions: Intl.DateTimeFormatOptions = { weekday: "long" };
+  const dateOptions: Intl.DateTimeFormatOptions = { weekday: "long", timeZone: city.timezone };
   const formattedDate = new Intl.DateTimeFormat(undefined, dateOptions).format(new Date(currentHourData.time_epoch * 1000));
 
   return (
