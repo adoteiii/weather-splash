@@ -39,6 +39,7 @@ export const LayoutManager = () => {
 
   useEffect(() => {
     // fetch the data
+    dispatch(setData(undefined))
     fetchData()
       .then((data_: WeatherData) => {
         dispatch(setData(data_));
