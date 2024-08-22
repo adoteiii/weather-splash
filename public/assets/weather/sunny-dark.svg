@@ -1,0 +1,15 @@
+<svg class="w-full h-full object-cover" viewBox="0 0 100 100">
+  <defs>
+    <radialGradient id="sunGradientDark" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+      <stop offset="0%" stop-color="#ffd54f" />
+      <stop offset="100%" stop-color="#ff8f00" />
+    </radialGradient>
+  </defs>
+  <circle cx="50" cy="50" r="40" fill="url(#sunGradientDark)" />
+  <g transform="translate(50, 50)">
+    <line x1="-30" y1="0" x2="30" y2="0" stroke="#424242" stroke-width="4" />
+    <line x1="0" y1="-30" x2="0" y2="30" stroke="#424242" stroke-width="4" />
+    <line x1="-21.21" y1="-21.21" x2="21.21" y2="21.21" stroke="#424242" stroke-width="4" />
+    <line x1="-21.21" y1="21.21" x2="21.21" y2="-21.21" stroke="#424242" stroke-width="4" />
+  </g>
+</svg>

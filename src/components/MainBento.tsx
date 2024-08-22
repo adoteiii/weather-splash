@@ -77,3 +77,5 @@ const MainBento: React.FC = () => {
 };
 
 export default MainBento;
+
+

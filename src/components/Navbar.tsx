@@ -54,7 +54,7 @@ const Navbar: React.FC<NavbarProps> = ({ alerts, onAlertIconClick }) => {
   return data !== undefined ? (
     <>
       <ProfileDialog open={profileDialogOpen} onClose={() => setProfileDialogOpen(false)} />
-      <nav className="top-0 py-3 z-[1000] w-full">
+      <nav className="top-0 py-3 z-10 w-full">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
             {/* Left section */}

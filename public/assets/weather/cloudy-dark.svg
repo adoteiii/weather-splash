@@ -1,0 +1,9 @@
+<svg class="w-full h-full object-cover" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="cloudGradientDark" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#424242" />
+      <stop offset="100%" stop-color="#212121" />
+    </linearGradient>
+  </defs>
+  <path d="M20 60 Q30 40 50 50 Q70 60 80 40" fill="url(#cloudGradientDark)" />
+</svg>

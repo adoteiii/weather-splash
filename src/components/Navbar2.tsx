@@ -13,7 +13,7 @@ const Navbar2: React.FC = () => {
   };
 
   return (
-    <nav className="top-0 py-4 z-[1000] bg-transparent w-full absolute">
+    <nav className="top-0 py-4 z-10 bg-transparent w-full absolute">
       <div className="container px-4 mx-auto relative text-sm">
         <div className="flex justify-between items-center flex-wrap">
           <Link href="/" legacyBehavior>

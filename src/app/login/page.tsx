@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Navbar2 from "@/components/Navbar2";
-import BackgroundVideo from "@/components/BackgroundVideo";
+import BackgroundVideo from "@/components/BackgroundSVG";
 import {
   signInWithEmailAndPassword,
   signInWithGoogle,
@@ -30,12 +30,12 @@ const Login: React.FC = () => {
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    setErrorMessage(""); 
+    setErrorMessage("");
     try {
       const result = await signInWithEmailAndPassword({ email, password });
-      if ('user' in result) {
+      if ("user" in result) {
         // This is a UserCredential object, login was successful
-        router.push("/"); 
+        router.push("/");
       } else {
         // This is an error object
         setErrorMessage(result.error || "Login failed. Please try again.");
@@ -61,17 +61,21 @@ const Login: React.FC = () => {
   };
 
   const handleGoogleLogin = async () => {
-    setErrorMessage(""); 
+    setErrorMessage("");
     try {
       const result = await signInWithGoogle();
       if (result === true) {
         router.push("/");
       } else {
-        setErrorMessage(result?.error || "Google login failed. Please try again.");
+        setErrorMessage(
+          result?.error || "Google login failed. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error during Google login", error);
-      setErrorMessage("An error occurred during Google login. Please try again.");
+      setErrorMessage(
+        "An error occurred during Google login. Please try again."
+      );
     }
   };
   return (
@@ -88,9 +92,9 @@ const Login: React.FC = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-          {errorMessage && (
-            <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
-          )}
+            {errorMessage && (
+              <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
+            )}
             <form onSubmit={handleLogin} className="grid gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>

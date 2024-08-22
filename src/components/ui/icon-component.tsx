@@ -2,8 +2,8 @@ import { weatherIconMappings } from "@/lib/iconMap";
 import Image from "next/image";
 
 interface IconComponentProps {
-  weatherCode: any; // assuming weatherCode is a string
-  x?: string; // assuming x is a string
+  weatherCode: any; 
+  x?: string; 
   className?: string;
 }
 

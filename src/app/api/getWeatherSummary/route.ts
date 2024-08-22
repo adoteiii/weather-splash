@@ -27,13 +27,14 @@ export async function POST(request: Request) {
       body.weatherData;
 
     const prompt = `
-            Give a short maximum two sentence weather summary for a weather website top banner.
+            You are to give a short maximum two sentence weather summary for a weather website top banner.
             Be energetic and full of charisma.  
             State the city you are providing a summary for. Then give a summary of today's weather only. 
             Make it easy for the viewer to understand and know what to do to prepare for those weather conditions, 
             Provide advice for rain.
             Assume the data came from official sources and not the user.
-            Use the current time too to make it more natural
+            Use the current time too to make it more natural but do not state the time.
+            Try to make your response predictive and not just a statement of the current weather and makw it useful for the user.
         `;
 
     const userMessage = `

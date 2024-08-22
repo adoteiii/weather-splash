@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'; // Import useRouter from next/navigation
+import { useRouter } from "next/navigation"; // Import useRouter from next/navigation
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,8 +16,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Navbar2 from "@/components/Navbar2";
-import BackgroundVideo from "@/components/BackgroundVideo";
-import { createUserWithEmailAndPassword, signInWithGoogle, updateProfile } from "@/lib/firebase/auth";
+import BackgroundVideo from "@/components/BackgroundSVG";
+import {
+  createUserWithEmailAndPassword,
+  signInWithGoogle,
+  updateProfile,
+} from "@/lib/firebase/auth";
 
 const SignUp: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -25,19 +29,22 @@ const SignUp: React.FC = () => {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const router = useRouter(); // Use router for navigation
-  
+
   const handleSignUp = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const userCredential: any = await createUserWithEmailAndPassword({email, password});
+      const userCredential: any = await createUserWithEmailAndPassword({
+        email,
+        password,
+      });
       const user = userCredential?.user;
-      console.log(userCredential)
-      if (!user){
-        alert('An error occurred, '+userCredential?.error);
-        return
+      console.log(userCredential);
+      if (!user) {
+        alert("An error occurred, " + userCredential?.error);
+        return;
       }
       // Optionally, update the user profile with additional info
-      await updateProfile(user,`${firstName} ${lastName}`);
+      await updateProfile(user, `${firstName} ${lastName}`);
       router.push("/"); // Redirect to home page upon successful signup
     } catch (error) {
       if (error instanceof Error) {
@@ -51,15 +58,13 @@ const SignUp: React.FC = () => {
   };
 
   const handleGoogleSignUp = async () => {
-    
     try {
-      const valid = await signInWithGoogle()
-      if (valid){
+      const valid = await signInWithGoogle();
+      if (valid) {
         router.push("/"); // Redirect to home page upon successful signup
       } else {
-        alert('Invalid credentials')
+        alert("Invalid credentials");
       }
-      
     } catch (error) {
       if (error instanceof Error) {
         console.error("Error signing in with Google", error);
@@ -133,9 +138,14 @@ const SignUp: React.FC = () => {
                 Create an account
               </Button>
             </form>
-            <Button variant="outline" className="w-full mt-4" onClick={(e)=>{
-              e.preventDefault()
-              handleGoogleSignUp()}}>
+            <Button
+              variant="outline"
+              className="w-full mt-4"
+              onClick={(e) => {
+                e.preventDefault();
+                handleGoogleSignUp();
+              }}
+            >
               <Image
                 height={24}
                 width={24}

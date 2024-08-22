@@ -15,6 +15,52 @@ const TopBanner: React.FC = () => {
     const [weatherSummary, setWeatherSummary] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // const getGradientColor = (description: string = '') => {
+    //   switch (description.toLowerCase()) {
+    //     case 'sunny':
+    //     case 'clear':
+    //       return 'from-yellow-300 to-orange-400';
+    //     case 'partly cloudy':
+    //       return 'from-blue-200 to-gray-300';
+    //     case 'cloudy':
+    //       return 'from-gray-300 to-gray-500';
+    //     case 'overcast':
+    //       return 'from-gray-400 to-gray-600';
+    //     case 'mist':
+    //     case 'fog':
+    //       return 'from-gray-300 to-gray-500';
+    //     case 'patchy rain possible':
+    //     case 'patchy light rain':
+    //     case 'patchy rain ahead':
+    //       return 'from-blue-200 to-gray-400';
+    //     case 'light rain':
+    //     case 'light drizzle':
+    //       return 'from-blue-300 to-blue-500';
+    //     case 'moderate rain':
+    //       return 'from-blue-400 to-blue-600';
+    //     case 'heavy rain':
+    //       return 'from-blue-600 to-blue-800';
+    //     case 'patchy snow possible':
+    //     case 'light snow':
+    //       return 'from-blue-100 to-gray-300';
+    //     case 'moderate snow':
+    //       return 'from-blue-200 to-gray-400';
+    //     case 'heavy snow':
+    //       return 'from-blue-300 to-gray-500';
+    //     case 'thunderstorm':
+    //     case 'thundery outbreaks possible':
+    //       return 'from-purple-500 to-gray-700';
+    //     case 'blizzard':
+    //       return 'from-blue-200 to-gray-100';
+    //     case 'freezing fog':
+    //       return 'from-blue-100 to-gray-300';
+    //     case 'patchy freezing drizzle possible':
+    //       return 'from-blue-200 to-gray-400';
+    //     default:
+    //       return 'from-blue-200 to-blue-400';
+    //   }
+    // }
+
     const currentLocation: Location | null = data && data.location ? {
         lon: data.location.lon,
         lat: data.location.lat,
@@ -24,6 +70,8 @@ const TopBanner: React.FC = () => {
           lat: data.location.lat.toString()
         }
       } : null;
+
+      
 
     useEffect(() => {
         const fetchWeatherSummary = async () => {
@@ -61,27 +109,27 @@ const TopBanner: React.FC = () => {
 
     return (
         <div className="w-full max-w-3xl mx-auto">
-          <div className=" rounded-lg shadow-sm overflow-hidden">
-            <Card >
-            <CardHeader>
-                Weather Summary
-            </CardHeader>
-              <div className="space-y-2">
-                <CardDescription>
-                  {error ? (
-                    <span className="text-red-100 text-sm">{error}</span>
-                  ) : (
-                    <span className="text-sm">
-                      {weatherSummary || 'Generating weather summary...'}
-                    </span>
-                  )}
-                </CardDescription>
-                <div>
-                  <p className="text-xs opacity-75">
-                    Powered by WeatherSplash AI
-                  </p>
+          <div className="">
+            <Card className=''>
+              <CardHeader>
+                  Weather Summary
+              </CardHeader>
+                <div className="space-y-2">
+                  <CardDescription>
+                    {error ? (
+                      <span className="text-red-100 text-sm">{error}</span>
+                    ) : (
+                      <span className="text-sm">
+                        {weatherSummary || 'Generating weather summary...'}
+                      </span>
+                    )}
+                  </CardDescription>
+                  <div>
+                    <p className="text-xs opacity-75">
+                      Powered by WeatherSplash AI
+                    </p>
+                  </div>
                 </div>
-              </div>
             </Card>
           </div>
         </div>
