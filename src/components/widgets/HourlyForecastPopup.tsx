@@ -29,8 +29,8 @@ export function HourlyForecastPopup({ day, onClose }: HourlyForecastPopupProps) 
   const data = useAppSelector(state=>state.DataReducer.value)
   function extractHoursFromDate(dt: number): string {
     const date = new Date(dt * 1000) 
-    console.log('date')
-    console.log('hf-', (getTimezone(data?.location.tz_id||"Brazil/West")?.utcOffset||0))
+    // console.log('date')
+    // console.log('hf-', (getTimezone(data?.location.tz_id||"Brazil/West")?.utcOffset||0))
     let hours = date.getHours()+ (getTimezone(data?.location.tz_id||"Brazil/West")?.utcOffset||0)/60;
     const ampm = hours >= 12 ? "PM" : "AM";
     

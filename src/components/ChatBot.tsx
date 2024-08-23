@@ -79,6 +79,11 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
             timestamp: 0,
             content: `Hello! I'm WeatherSplash, your weather assistant. The current weather in ${weatherData.city} is ${weatherData.condition} with a temperature of ${weatherData.temperature}°C.  How can I help you with weather-related questions?`,
           }];
+        if (writing){
+          return
+        }
+        setWriting(true)
+        
         snapshot.docs.forEach((doc) => {
           data.push({
             ...(doc.data() as {
@@ -90,13 +95,16 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
           });
         });
         data = data.sort((a, b) => a.timestamp - b.timestamp);
-        dispatch(setMessages(data));
+        
         // last message
-        if (data?.length && data?.[data.length - 1]?.sender !== "ai") {
+
+        const lastMessage = data?.[-1]
+        if (data?.length && lastMessage?.sender === "user") {
           // reply to user
+
           console.log(
             'fetching ai response',
-            data?.[data.length - 1],
+            lastMessage,
             weatherData
           )
           fetch("/api/chat", {
@@ -104,7 +112,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: data?.[data.length - 1]?.content, weatherData }),
+            body: JSON.stringify({ message: lastMessage?.content, weatherData }),
           }).then(async (response) => {
             const dataRes = await response.json();
             const aiMessage = {
@@ -113,18 +121,29 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
               email: user?.email,
               timestamp: dayjs().valueOf(),
             };
-            console.log('ai content...')
+            console.log('ai content...', aiMessage)
             if (aiMessage.content){
-              writeToDoc("messages", v4(), aiMessage);
+              writeToDoc("messages", v4(), aiMessage).then(()=>{
+                setWriting(false)
+              }).catch(()=>{
+                setWriting(false)
+              });
             }
             
           }).catch((e)=>{
             console.log(e)
+            setWriting(false)
             toast.error("Something went wrong. Could not generate response")
           })
+        } else {
+          setWriting(false)
         }
+        dispatch(setMessages(data));
       },
-      () => {}
+      (error) => {
+        console.log('error')
+        setWriting(false)
+      }
     );
     return unsubscribe;
   }, [user]);
@@ -142,7 +161,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
       messages?.[0]?.sender !== "ai" ||
       (!messages?.[0]?.content.includes(weatherData.city))
     ) {
-      setWriting(true);
+      // setWriting(true);
       // writeToDoc("messages", v4(), {
       //   email: user?.email,
       //   sender: "ai",

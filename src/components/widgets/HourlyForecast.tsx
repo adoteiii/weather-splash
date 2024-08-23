@@ -15,8 +15,8 @@ export default function HourlyForecast({ data }: HourlyForecastProps) {
   const datan = useAppSelector(state=>state.DataReducer.value)
   function extractHoursFromDate(dt: number): string {
     const date = new Date(dt * 1000);
-    console.log('date')
-    console.log('hf-', (getTimezone(datan?.location.tz_id||"Brazil/West")?.utcOffset||0))
+    // console.log('date')
+    // console.log('hf-', (getTimezone(datan?.location.tz_id||"Brazil/West")?.utcOffset||0))
     let hours = date.getHours()+ (getTimezone(datan?.location.tz_id||"Brazil/West")?.utcOffset||0)/60;
     // let hours = date.getHours();
     const ampm = hours >= 12 ? "PM" : "AM";
