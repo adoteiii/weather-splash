@@ -99,10 +99,11 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
           });
         });
         data = data.sort((a, b) => a.timestamp - b.timestamp);
+        console.log('sorted data', data)
         
         // last message
 
-        const lastMessage = data?.[-1]
+        const lastMessage = data?.at(-1)
         if (data?.length && lastMessage?.sender === "user") {
           // reply to user
 
