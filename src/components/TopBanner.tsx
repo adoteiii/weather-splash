@@ -74,6 +74,7 @@ const TopBanner: React.FC = () => {
       
 
     useEffect(() => {
+        setWeatherSummary(null)
         const fetchWeatherSummary = async () => {
             if (data) {
                 try {

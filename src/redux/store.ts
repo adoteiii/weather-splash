@@ -5,6 +5,7 @@ import LocationReducer from './features/locationSlice'
 import UnitReducer from './features/unitSlice'
 import SearchHistoryReducer from './features/searchHistorySlice'
 import UserLocationReducer from './features/userLocationSlice'
+import MessagesReducer from './features/messagesSlice'
 
 export const store = configureStore(
     {reducer:
@@ -13,7 +14,8 @@ export const store = configureStore(
            LocationReducer,
            UnitReducer,
            SearchHistoryReducer,
-           UserLocationReducer
+           UserLocationReducer,
+           MessagesReducer
         }
     }
 )

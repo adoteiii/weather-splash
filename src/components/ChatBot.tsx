@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState, useEffect, useRef } from "react";
-import Image from 'next/image';
+import { useState, useEffect, useRef, useContext } from "react";
+import Image from "next/image";
 import {
   Sheet,
   SheetContent,
@@ -10,6 +10,16 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { AuthorizationContext } from "@/lib/userContext";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase/firebase";
+import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { setMessages } from "@/redux/features/messagesSlice";
+import { writeToDoc } from "@/lib/firebase/firestore";
+import { v4 } from "uuid";
+import toast from "react-hot-toast";
 
 interface ForecastDay {
   date: string;
@@ -37,19 +47,116 @@ interface ChatBotProps {
 }
 
 const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
-  const [messages, setMessages] = useState<{ sender: string; content: string }[]>([]);
+  const messages = useAppSelector((state) => state.MessagesReducer.value);
+  const [_messages, _] = useState<
+    { sender: string; content: string; email: string; timestamp: number }[]
+  >([]);
+  const dispatch = useDispatch<AppDispatch>();
+  const {user} = useContext(AuthorizationContext);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [writing, setWriting] = useState(false);
+  useEffect(() => {
+    if (!user?.email) {
+      return;
+    }
+    // listen for snapshot data
+    const q = query(
+      collection(db, "messages"),
+      where("email", "==", user?.email)
+    );
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        let data: {
+          sender: string;
+          content: string;
+          email: string;
+          timestamp: number;
+        }[] = [{
+            email: user?.email,
+            sender: "ai",
+            timestamp: 0,
+            content: `Hello! I'm WeatherSplash, your weather assistant. The current weather in ${weatherData.city} is ${weatherData.condition} with a temperature of ${weatherData.temperature}°C.  How can I help you with weather-related questions?`,
+          }];
+        snapshot.docs.forEach((doc) => {
+          data.push({
+            ...(doc.data() as {
+              sender: string;
+              content: string;
+              email: string;
+              timestamp: number;
+            }),
+          });
+        });
+        data = data.sort((a, b) => a.timestamp - b.timestamp);
+        dispatch(setMessages(data));
+        // last message
+        if (data?.length && data?.[data.length - 1]?.sender !== "ai") {
+          // reply to user
+          console.log(
+            'fetching ai response',
+            data?.[data.length - 1],
+            weatherData
+          )
+          fetch("/api/chat", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ message: data?.[data.length - 1]?.content, weatherData }),
+          }).then(async (response) => {
+            const dataRes = await response.json();
+            const aiMessage = {
+              sender: "ai",
+              content: dataRes.result,
+              email: user?.email,
+              timestamp: dayjs().valueOf(),
+            };
+            console.log('ai content...')
+            if (aiMessage.content){
+              writeToDoc("messages", v4(), aiMessage);
+            }
+            
+          }).catch((e)=>{
+            console.log(e)
+            toast.error("Something went wrong. Could not generate response")
+          })
+        }
+      },
+      () => {}
+    );
+    return unsubscribe;
+  }, [user]);
 
   useEffect(() => {
     // Add an initial message from the AI when the component mounts or weatherData changes
-    setMessages([
-      {
-        sender: "ai",
-        content: `Hello! I'm WeatherSplash, your weather assistant. The current weather in ${weatherData.city} is ${weatherData.condition} with a temperature of ${weatherData.temperature}°C.  How can I help you with weather-related questions?`,
-      },
-    ]);
-  }, [weatherData]);
+    if (writing) {
+      return;
+    }
+    if (!user?.email){
+      return
+    }
+    if (
+      !messages ||
+      messages?.[0]?.sender !== "ai" ||
+      (!messages?.[0]?.content.includes(weatherData.city))
+    ) {
+      setWriting(true);
+      // writeToDoc("messages", v4(), {
+      //   email: user?.email,
+      //   sender: "ai",
+      //   timestamp: dayjs().valueOf(),
+      //   content: `Hello! I'm WeatherSplash, your weather assistant. The current weather in ${weatherData.city} is ${weatherData.condition} with a temperature of ${weatherData.temperature}°C.  How can I help you with weather-related questions?`,
+      // })
+      //   .then(() => {
+      //     // setWriting(false);
+      //   })
+      //   .catch(() => {
+      //     setWriting(false);
+      //   });
+    }
+  }, [weatherData, user]);
 
   useEffect(() => {
     // Scroll to the bottom of the messages
@@ -59,30 +166,28 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
   const sendMessage = async () => {
     if (input.trim() === "") return;
 
-    const userMessage = { sender: "user", content: input };
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    const userMessage = {
+      sender: "user",
+      content: input,
+      email: user?.email,
+      timestamp: dayjs().valueOf(),
+    };
 
     // Reset input field
-    setInput("");
-
     // Fetch response from API
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ message: input, weatherData }),
-      });
-
-      const data = await response.json();
-      const aiMessage = { sender: "ai", content: data.result };
-
-      setMessages((prevMessages) => [...prevMessages, aiMessage]);
+      await writeToDoc("messages", v4(), userMessage);
+      setInput("");
     } catch (error) {
       console.error("Error sending message:", error);
-      const errorMessage = { sender: "ai", content: "Sorry, something went wrong. Please try again." };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      setInput("");
+      // const errorMessage = {
+      //   sender: "ai",
+      //   content: "Sorry, something went wrong. Please try again.",
+      //   email: user?.email,
+      //   timestamp: dayjs().valueOf(),
+      // };
+      // setMessages((prevMessages) => [...prevMessages, errorMessage]);
     }
   };
 
@@ -91,9 +196,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
       <SheetTrigger asChild>
         <Button variant="outline" className="p-0 border-none bg-transparent">
           <div className="flex flex-col items-center">
-            <div 
-              className="w-[100px] h-[100px] transition-transform duration-300 ease-in-out hover:scale-110"
-            >
+            <div className="w-[100px] h-[100px] transition-transform duration-300 ease-in-out hover:scale-110">
               <Image
                 src="/assets/ws-ai-bot.svg"
                 alt="AI Bot"
@@ -106,20 +209,31 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
         </Button>
       </SheetTrigger>
 
-
       <SheetContent side="right" className="w-[400px] sm:w-[540px]">
         <SheetHeader>
           <SheetTitle>WeatherSplash AI</SheetTitle>
           <SheetDescription>
-            Ask me about the current weather, forecast, or any weather-related questions for {weatherData.city}.
+            Ask me about the current weather, forecast, or any weather-related
+            questions for {weatherData.city}.
           </SheetDescription>
         </SheetHeader>
 
         <div className="flex flex-col h-[calc(100vh-200px)] justify-between">
           <div className="flex-grow overflow-y-auto py-4 pr-4">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} mb-2`}>
-                <div className={`p-2 rounded-md max-w-[80%] ${msg.sender === "user" ? "bg-blue-500 text-white" : "bg-teal-200 text-black"}`}>
+            {messages?.map((msg, idx) => (
+              <div
+                key={idx}
+                className={`flex ${
+                  msg.sender === "user" ? "justify-end" : "justify-start"
+                } mb-2`}
+              >
+                <div
+                  className={`p-2 rounded-md max-w-[80%] ${
+                    msg.sender === "user"
+                      ? "bg-blue-500 text-white"
+                      : "bg-teal-200 text-black"
+                  }`}
+                >
                   {msg.content}
                 </div>
               </div>
@@ -128,15 +242,16 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
           </div>
 
           <div className="flex items-center gap-4 py-4">
-            <Input
+          
+            {user?.email?<Input
               id="chat-input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
               placeholder="Ask about the weather..."
               className="flex-1"
-            />
-            <Button onClick={sendMessage}>Send</Button>
+            />:<span className="w-full text-sm text-center">Sign in to use chat!</span>}
+            <Button disabled={!user?.email} onClick={sendMessage}>Send</Button>
           </div>
         </div>
       </SheetContent>
