@@ -120,19 +120,19 @@ export default function WeatherNotifications({ location }: { location: Location 
             {alerts.length > 0 ? (
               alerts.map((alert, index) => (
                 <div key={index} className="mb-4">
-                  <h3 className="font-bold">{alert.event}</h3>
-                  <p><strong>Severity:</strong> {alert.severity}</p>
-                  <p><strong>Areas:</strong> {alert.areas}</p>
-                  <p>{alert.desc}</p>
-                  <p><strong>Effective:</strong> {new Date(alert.effective).toLocaleString()}</p>
-                  <p><strong>Expires:</strong> {new Date(alert.expires).toLocaleString()}</p>
+                  <span className="font-bold">{alert.event}</span>
+                  <span><strong>Severity:</strong> {alert.severity}</span>
+                  <span><strong>Areas:</strong> {alert.areas}</span>
+                  <span>{alert.desc}</span>
+                  <span><strong>Effective:</strong> {new Date(alert.effective).toLocaleString()}</span>
+                  <span><strong>Expires:</strong> {new Date(alert.expires).toLocaleString()}</span>
                   {alert.instruction && (
-                    <p><strong>Instructions:</strong> {alert.instruction}</p>
+                    <span><strong>Instructions:</strong> {alert.instruction}</span>
                   )}
                 </div>
               ))
             ) : (
-              <p>No current weather alerts for this location.</p>
+              <span>No current weather alerts for this location.</span>
             )}
           </AlertDialogDescription>
         </AlertDialogHeader>
