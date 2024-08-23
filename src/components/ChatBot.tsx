@@ -11,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { AuthorizationContext } from "@/lib/userContext";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { AppDispatch, RootState, useAppSelector } from "@/redux/store";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase";
 import dayjs from "dayjs";
@@ -56,6 +56,10 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [writing, setWriting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  
+
   useEffect(() => {
     if (!user?.email) {
       return;
@@ -210,6 +214,18 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
     }
   };
 
+  const searchMessages = (
+    messages: RootState['MessagesReducer']['value'] | undefined,
+    query: string
+  ) => {
+    if (!messages) return [];
+    return messages.filter((msg) =>
+      msg.content.toLowerCase().includes(query.toLowerCase())
+    );
+  };
+
+
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -246,9 +262,20 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
           </SheetDescription>
         </SheetHeader>
 
+        <div className="mt-4">
+        <Input
+          type="text"
+          placeholder="Search messages..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="mb-4"
+        />
+        </div>
+       
+
         <div className="flex flex-col h-[calc(100vh-200px)] justify-between">
           <div className="flex-grow overflow-y-auto py-4 pr-4">
-            {messages?.map((msg, idx) => (
+          {searchMessages(messages, searchQuery).map((msg, idx) => (
               <div
                 key={idx}
                 className={`flex ${

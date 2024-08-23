@@ -71,11 +71,13 @@ export async function POST(request: Request) {
       .join("; ");
 
     const contextPrompt = `
-  WeatherSplash: Focus on weather. Use data provided. Redirect non-weather topics politely.
-  Current: ${currentWeather}
-  Forecast: ${forecastSummary}
-  User: ${message}
-  Response:`;
+        WeatherSplash: Focus on weather no matter the context. Use data provided. Check non-weather topics it may be related to weather in and way but redirect if not politely.
+        Use weather data to provide forecast and current weather when asked about events of any sort or general questions. Example: "Will I be able to go for my wedding next week?". Answer approprately.
+        Let responses be natural, fun, short and engaging. 
+        Current: ${currentWeather}
+        Forecast: ${forecastSummary}
+        User: ${message}
+        Response:`;
 
     console.log("Sending request to Gemini API");
     const result = await model.generateContent({

@@ -103,5 +103,5 @@ export async function deleteAccount(currentUser:User) {
 }
 
 export async function sendEmailVerificationLink(user: User){
-  await sendEmailVerification(user, {url:"https://bloomballot.com/signin"});
+  await sendEmailVerification(user, {url:"https://weather-splash.web.app//signin"});
 }
