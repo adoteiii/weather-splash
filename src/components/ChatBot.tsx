@@ -204,14 +204,23 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
                 height={100}
               />
             </div>
-            <p className="mt-2 text-sm text-gray-600">Ask me a question</p>
+            <p className="mt-2 text-sm">Ask me a question</p>
           </div>
         </Button>
       </SheetTrigger>
 
       <SheetContent side="right" className="w-[400px] sm:w-[540px]">
         <SheetHeader>
-          <SheetTitle>WeatherSplash AI</SheetTitle>
+          <SheetTitle className="mb-4">
+          <Image
+                  height={32}
+                  width={32}
+                  src="https://firebasestorage.googleapis.com/v0/b/weather-splash.appspot.com/o/logo%2FWeatherSplashLogo.svg?alt=media&token=d140e155-96f1-42ac-b149-cd33fcce04c5"
+                  alt="Logo"
+                  unoptimized
+                  className="h-6 w-auto cursor-pointer "
+                />
+          </SheetTitle>
           <SheetDescription>
             Ask me about the current weather, forecast, or any weather-related
             questions for {weatherData.city}.
@@ -231,7 +240,7 @@ const ChatBot: React.FC<ChatBotProps> = ({ weatherData }) => {
                   className={`p-2 rounded-md max-w-[80%] ${
                     msg.sender === "user"
                       ? "bg-blue-500 text-white"
-                      : "bg-teal-200 text-black"
+                      : "bg-zinc-800 text-white"
                   }`}
                 >
                   {msg.content}
